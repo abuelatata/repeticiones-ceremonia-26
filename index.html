@@ -904,31 +904,57 @@
       );
     }
 
-    function setImageWithFallbacks(imgEl, ref){
-      const candidates = [
-        `images/${ref}.jpg`,
-        `images/${ref}.JPG`,
-        `images/${ref}.jpeg`,
-        `images/${ref}.JPEG`,
-        `images/${ref}.png`,
-        `images/${ref}.PNG`,
-        `images/${ref}.webp`,
-        `images/${ref}.WEBP`
-      ];
+   function setImageWithFallbacks(imgEl, ref){
+  const cleanRef = String(ref ?? "").trim();   // <-- LIMPIA ref (quita espacios/saltos)
+  const v = Date.now();                        // <-- rompe caché
+  const candidates = [
+    `images/${cleanRef}.jpg?v=${v}`,
+    `images/${cleanRef}.JPG?v=${v}`,
+    `images/${cleanRef}.jpeg?v=${v}`,
+    `images/${cleanRef}.JPEG?v=${v}`,
+    `images/${cleanRef}.png?v=${v}`,
+    `images/${cleanRef}.PNG?v=${v}`,
+    `images/${cleanRef}.webp?v=${v}`,
+    `images/${cleanRef}.WEBP?v=${v}`
+  ];
 
-      let i = 0;
+  let i = 0;
+  imgEl.src = candidates[i];
+
+  imgEl.onerror = () => {
+    i++;
+    if (i < candidates.length){
       imgEl.src = candidates[i];
-
-      imgEl.onerror = () => {
-        i++;
-        if (i < candidates.length){
-          imgEl.src = candidates[i];
-        } else {
-          imgEl.onerror = null;
-          imgEl.src = placeholderDataURL(ref);
-        }
-      };
+    } else {
+      imgEl.onerror = null;
+      imgEl.src = placeholderDataURL(cleanRef);
     }
+  };
+}
+
+✅ Esto hace 2 cosas:
+
+limpia la referencia (adiós caracteres ocultos)
+
+fuerza recarga (adiós caché)
+
+Después de pegarlo
+
+Commit changes
+
+Abre la app (github.io) y haz Ctrl + F5
+
+Si quieres comprobarlo al 100%
+
+En la consola (F12), pon:
+
+console.log("REF->", JSON.stringify(ref));
+
+y verás si venía con espacios.
+
+Haz ese cambio y me dices si ya te aparecen. Como te aparezcan, ¡io puta qué artista eres! 😄
+
+La transmisión se ha interrumpido. Esperando el mensaje completo...
 
     // =============================
     // Render
