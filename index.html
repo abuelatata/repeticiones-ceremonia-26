@@ -756,15 +756,11 @@
 
     // =============================
     // Reglas de tallas (CEREMONIA 26)
-    // - 12/13/03: 3M-4A
-    // - 25/04/44: 12M-12A (NO 7A y 9A)
-    // - 08: ÚNICA
     // =============================
     const SIZES_BEBE  = ["3m","6m","9m","12m","18m","2a","3a","4a"];
     const SIZES_NINO  = ["12m","18m","2a","3a","4a","5a","6a","8a","10a","12a"]; // sin 7a y 9a
     const SIZES_UNICA = ["ÚNICA"];
 
-    // TIPO = 2 primeras, FAMILIA = 3 últimas
     function typeFromRef(ref){
       const s = String(ref || "").trim();
       if (s.length < 2) return "";
@@ -777,7 +773,7 @@
     }
 
     function sizesForType(type){
-      if (type === "08") return SIZES_UNICA;                 // diademas
+      if (type === "08") return SIZES_UNICA;                  // diademas
       if (["12","13","03"].includes(type)) return SIZES_BEBE; // jesusitos + braguita niño
       if (["25","04","44"].includes(type)) return SIZES_NINO; // vestidos + pantalón niño + camisas
       return SIZES_NINO;
@@ -796,7 +792,6 @@
         setProductosFromJSON(data);
       }catch(err){
         console.warn(err);
-        // fallback: si algo falla, lo avisamos
         document.getElementById("err").style.display = "block";
         document.getElementById("err").textContent = "No he podido cargar la tarifa. Revisa que exista /data/tarifa.json en el repo.";
       }
@@ -832,7 +827,6 @@
       if (order[ref][size] === 0) delete order[ref][size];
       if (Object.keys(order[ref]).length === 0) delete order[ref];
       refreshTotals();
-      // re-render solo esa tarjeta sería ideal, pero aquí mantenemos simple
       render();
     }
 
@@ -898,11 +892,49 @@
     }
 
     // =============================
+    // Fotos: resolver extensión (JPG/PNG/WEBP/JPEG)
+    // =============================
+    function placeholderDataURL(ref){
+      return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(
+        `<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800'>
+          <rect width='100%' height='100%' fill='#ffffff'/>
+          <text x='50%' y='48%' text-anchor='middle' font-family='Arial' font-size='34' fill='#5c6b6b'>${t("noPhoto")}</text>
+          <text x='50%' y='56%' text-anchor='middle' font-family='Arial' font-size='30' fill='#102a2a'>${ref}</text>
+        </svg>`
+      );
+    }
+
+    function setImageWithFallbacks(imgEl, ref){
+      const candidates = [
+        `images/${ref}.jpg`,
+        `images/${ref}.JPG`,
+        `images/${ref}.jpeg`,
+        `images/${ref}.JPEG`,
+        `images/${ref}.png`,
+        `images/${ref}.PNG`,
+        `images/${ref}.webp`,
+        `images/${ref}.WEBP`
+      ];
+
+      let i = 0;
+      imgEl.src = candidates[i];
+
+      imgEl.onerror = () => {
+        i++;
+        if (i < candidates.length){
+          imgEl.src = candidates[i];
+        } else {
+          imgEl.onerror = null;
+          imgEl.src = placeholderDataURL(ref);
+        }
+      };
+    }
+
+    // =============================
     // Render
     // =============================
     const grid = document.getElementById("grid");
     const q = document.getElementById("q");
-    const countEl = document.getElementById("count");
     const linesEl = document.getElementById("lines");
     const uEl = document.getElementById("u");
     const tEl = document.getElementById("t");
@@ -935,9 +967,9 @@
         const img = document.createElement("img");
         img.alt = p.ref;
         img.loading = "lazy";
-        img.src = `images/${p.ref}.jpg`;
-        img.onerror = () => { img.src = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='800'><rect width='100%' height='100%' fill='#ffffff'/><text x='50%' y='48%' text-anchor='middle' font-family='Arial' font-size='34' fill='#5c6b6b'>${t("noPhoto")}</text><text x='50%' y='56%' text-anchor='middle' font-family='Arial' font-size='30' fill='#102a2a'>${p.ref}</text></svg>`); };
-        img.addEventListener("click", ()=> openLightbox(p.ref, img.src));
+        setImageWithFallbacks(img, p.ref);
+
+        img.addEventListener("click", ()=> openLightbox(p.ref));
 
         const badge = document.createElement("div");
         badge.className = "imgBadge";
@@ -1049,7 +1081,6 @@
         grid.appendChild(card);
       });
 
-      // totales tras render
       refreshTotals();
     }
 
@@ -1104,9 +1135,9 @@
     document.getElementById("lbClose").addEventListener("click", closeLightbox);
     lb.addEventListener("click", (e)=>{ if(e.target === lb) closeLightbox(); });
 
-    function openLightbox(ref, src){
+    function openLightbox(ref){
       lbTitle.textContent = ref;
-      lbImg.src = src;
+      setImageWithFallbacks(lbImg, ref);
       lb.style.display = "flex";
     }
     function closeLightbox(){
@@ -1149,7 +1180,6 @@
         });
       });
 
-      // orden por referencia
       lines.sort((a,b)=> (a.ref>b.ref?1:-1));
       return lines;
     }
@@ -1170,7 +1200,6 @@
       }
       errEl.style.display="none";
 
-      // total
       let totalUnits=0, totalEUR=0, totalSurcharge=0;
       lines.forEach(l=>{
         totalUnits += l.units;
@@ -1210,7 +1239,6 @@
         `${t("confirm")}.`
       ].filter(Boolean).join("\n");
 
-      // Enviar a tu correo (destino). Cambia si quieres.
       const to = "info@abuelatata.com";
       const mailto = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       window.location.href = mailto;
@@ -1268,7 +1296,6 @@
       doc.setFont("helvetica","bold");
       doc.text(t("orderDetails"), margin, y); y += 6;
 
-      // Totales
       let totalUnits=0, totalEUR=0, totalSurcharge=0;
       lines.forEach(l=>{
         totalUnits += l.units;
@@ -1277,7 +1304,6 @@
         if(l.surcharge) totalSurcharge += base*0.10;
       });
 
-      // filas
       const rowH = 30;
       for(const l of lines){
         if(y + rowH + 30 > pageH){
@@ -1285,11 +1311,9 @@
           y = 14;
         }
 
-        // cuadro
         doc.setDrawColor(220);
         doc.roundedRect(margin, y, pageW - margin*2, rowH, 3, 3);
 
-        // texto
         doc.setFont("helvetica","bold"); doc.setFontSize(11);
         doc.text(`${l.ref} · ${l.name}`, margin+3, y+8);
 
@@ -1307,7 +1331,6 @@
         y += rowH + 6;
       }
 
-      // resumen final
       if(y + 26 > pageH){
         doc.addPage();
         y = 14;
