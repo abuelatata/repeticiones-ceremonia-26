@@ -1086,13 +1086,21 @@
   let imgData=null;
   if(ln.imgUrl) imgData = await urlToDataURL(ln.imgUrl);
 
-  if(imgData){
-    try{ doc.addImage(imgData, "JPEG", xImg, y-1, wImg, wImg); }
-    catch(e){ try{ doc.addImage(imgData, "PNG", xImg, y-1, wImg, wImg); }catch(_){ } }
-  }else{
-    doc.setDrawColor(210); doc.rect(xImg, y-1, wImg, wImg);
-    doc.setFontSize(7); doc.text("Sin foto", xImg + wImg/2, y+9, {align:"center"}); doc.setFontSize(9);
+ if (imgData) {
+  try {
+    doc.addImage(imgData, "JPEG", xImg, y - 1, wImg, wImg);
+  } catch (e) {
+    try {
+      doc.addImage(imgData, "PNG", xImg, y - 1, wImg, wImg);
+    } catch (_) {}
   }
+} else {
+  doc.setDrawColor(210);
+  doc.rect(xImg, y - 1, wImg, wImg);
+  doc.setFontSize(7);
+  doc.text("Sin foto", xImg + wImg / 2, y + 9, { align: "center" });
+  doc.setFontSize(9);
+}
 
   // Textos
   doc.text(refLines, xRef, y+3);
