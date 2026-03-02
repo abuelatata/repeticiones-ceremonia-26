@@ -16,8 +16,7 @@
       --muted:#8a6c57;
       --card:#fffaf3;
       --stroke:#e7dccf;
-      --accent:#8fbfb4;     /* verde agua */
-      --accent2:#d7a9b8;    /* maquillaje suave */
+      --accent:#8fbfb4;
       --danger:#c04b4b;
       --shadow:0 12px 28px rgba(0,0,0,.10);
       --radius:18px;
@@ -25,75 +24,32 @@
     *{ box-sizing:border-box; }
     body{
       margin:0;
-      font-family: "Georgia", serif;
+      font-family:"Georgia", serif;
       background:var(--bg);
       background-image: radial-gradient(#e8dfd3 1px, transparent 1px);
       background-size: 18px 18px;
       color:var(--ink);
     }
-    a{ color:inherit; }
-    .wrap{
-      max-width:1180px;
-      margin:auto;
-      padding:28px 18px 70px;
-    }
-
+    .wrap{ max-width:1180px; margin:auto; padding:28px 18px 70px; }
     header{
-      display:flex;
-      gap:16px;
-      align-items:center;
-      justify-content:space-between;
-      flex-wrap:wrap;
-      margin-bottom:18px;
+      display:flex; gap:16px; align-items:center; justify-content:space-between;
+      flex-wrap:wrap; margin-bottom:18px;
     }
-    .brand{
-      display:flex;
-      gap:14px;
-      align-items:center;
-      min-width:260px;
-    }
+    .brand{ display:flex; gap:14px; align-items:center; min-width:260px; }
     .logo{
-      width:64px;height:64px;
-      border-radius:16px;
-      background:#fff;
-      border:1px solid var(--stroke);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      box-shadow: var(--shadow);
-      overflow:hidden;
+      width:64px;height:64px;border-radius:16px;background:#fff;border:1px solid var(--stroke);
+      display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);overflow:hidden;
+      font-weight:700;color:#6e4f3a;
     }
     .logo img{ width:100%; height:100%; object-fit:contain; }
-    .brand h1{
-      margin:0;
-      font-size:18px;
-      letter-spacing:.2px;
-      line-height:1.15;
-    }
-    .brand p{
-      margin:4px 0 0;
-      color:var(--muted);
-      font-size:12.5px;
-    }
+    .brand h1{ margin:0; font-size:18px; letter-spacing:.2px; line-height:1.15; }
+    .brand p{ margin:4px 0 0; color:var(--muted); font-size:12.5px; }
 
-    .lang{
-      display:flex;
-      gap:10px;
-      align-items:center;
-    }
+    .lang{ display:flex; gap:10px; align-items:center; }
     .lang button{
-      border:1px solid var(--stroke);
-      background:#fff;
-      border-radius:999px;
-      padding:8px 10px;
-      cursor:pointer;
-      box-shadow: 0 8px 18px rgba(0,0,0,.06);
-      transition:.15s transform;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      font-size:13px;
-      color:var(--ink);
+      border:1px solid var(--stroke); background:#fff; border-radius:999px; padding:8px 10px;
+      cursor:pointer; box-shadow:0 8px 18px rgba(0,0,0,.06); transition:.15s transform;
+      display:flex; align-items:center; gap:8px; font-size:13px; color:var(--ink);
     }
     .lang button:active{ transform:scale(.98); }
     .lang button.active{
@@ -101,360 +57,163 @@
       box-shadow: 0 10px 22px rgba(143,191,180,.22);
     }
     .flag{
-      width:18px;height:18px;border-radius:999px;
-      border:1px solid var(--stroke);
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      font-size:12px;
-      background:#fff;
+      width:18px;height:18px;border-radius:999px;border:1px solid var(--stroke);
+      display:inline-flex;align-items:center;justify-content:center;font-size:12px;background:#fff;
     }
 
     .topbar{
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:12px;
-      align-items:stretch;
+      display:grid; grid-template-columns: 1.2fr .8fr; gap:12px; align-items:stretch;
       margin:12px 0 18px;
     }
-    @media (max-width:860px){
-      .topbar{ grid-template-columns:1fr; }
-    }
+    @media (max-width:860px){ .topbar{ grid-template-columns:1fr; } }
 
     .panel{
-      background:var(--card);
-      border:1px solid var(--stroke);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding:14px;
+      background:var(--card); border:1px solid var(--stroke); border-radius:var(--radius);
+      box-shadow:var(--shadow); padding:14px;
     }
 
-    .searchRow{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-    }
-    .search{
-      flex:1;
-      min-width:240px;
-      position:relative;
-    }
+    .searchRow{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    .search{ flex:1; min-width:240px; position:relative; }
     .search input{
-      width:100%;
-      padding:13px 14px 13px 44px;
-      border-radius:14px;
-      border:2px solid rgba(143,191,180,.55); /* para que destaque */
-      outline:none;
-      background:#fff;
-      font-size:14px;
-      color:var(--ink);
-      box-shadow: 0 10px 22px rgba(143,191,180,.12);
+      width:100%; padding:13px 14px 13px 44px; border-radius:14px;
+      border:2px solid rgba(143,191,180,.55); outline:none; background:#fff;
+      font-size:14px; color:var(--ink);
+      box-shadow:0 10px 22px rgba(143,191,180,.12);
     }
     .search .icon{
-      position:absolute;
-      left:14px; top:50%;
-      transform:translateY(-50%);
-      color:var(--muted);
-      font-size:18px;
-      user-select:none;
+      position:absolute; left:14px; top:50%; transform:translateY(-50%);
+      color:var(--muted); font-size:18px; user-select:none;
     }
     .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:10px 12px;
-      border-radius:999px;
-      border:1px solid var(--stroke);
-      background:#fff;
-      font-size:13px;
-      color:var(--ink);
-      cursor:pointer;
-      user-select:none;
+      display:inline-flex; align-items:center; gap:8px; padding:10px 12px; border-radius:999px;
+      border:1px solid var(--stroke); background:#fff; font-size:13px; color:var(--ink);
+      cursor:pointer; user-select:none;
     }
     .pill input{ accent-color: var(--accent); }
 
-    .actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-      align-items:center;
-    }
+    .actions{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; align-items:center; }
     .btn{
-      border:0;
-      border-radius:14px;
-      padding:12px 14px;
-      cursor:pointer;
-      background:var(--accent);
-      color:#103b33;
-      font-family:inherit;
-      font-size:14px;
-      box-shadow: 0 12px 24px rgba(143,191,180,.26);
-      transition:.15s transform, .15s filter;
-      display:inline-flex;
-      gap:10px;
-      align-items:center;
-      justify-content:center;
+      border:0; border-radius:14px; padding:12px 14px; cursor:pointer;
+      background:var(--accent); color:#103b33; font-family:inherit; font-size:14px;
+      box-shadow:0 12px 24px rgba(143,191,180,.26); transition:.15s transform, .15s filter;
+      display:inline-flex; gap:10px; align-items:center; justify-content:center;
     }
     .btn:active{ transform:scale(.98); }
     .btn.secondary{
-      background:#fff;
-      border:1px solid var(--stroke);
-      color:var(--ink);
-      box-shadow: 0 10px 20px rgba(0,0,0,.06);
+      background:#fff; border:1px solid var(--stroke); color:var(--ink);
+      box-shadow:0 10px 20px rgba(0,0,0,.06);
     }
     .btn.danger{
-      background: #ffeceb;
-      color: #7b1d1d;
-      box-shadow: 0 12px 24px rgba(192,75,75,.12);
+      background:#ffeceb; color:#7b1d1d; box-shadow:0 12px 24px rgba(192,75,75,.12);
     }
 
-    .hint{
-      margin-top:10px;
-      font-size:12.5px;
-      color:var(--muted);
-      line-height:1.35;
-    }
+    .hint{ margin-top:10px; font-size:12.5px; color:var(--muted); line-height:1.35; }
 
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:14px;
-      margin-top:14px;
-    }
-    @media (max-width:1050px){ .grid{ grid-template-columns: repeat(2,1fr);} }
-    @media (max-width:640px){ .grid{ grid-template-columns: 1fr; } }
+    .grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:14px; }
+    @media (max-width:1050px){ .grid{ grid-template-columns:repeat(2,1fr);} }
+    @media (max-width:640px){ .grid{ grid-template-columns:1fr; } }
 
     .card{
-      background:var(--card);
-      border:1px solid var(--stroke);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      display:flex;
-      flex-direction:column;
-      min-height: 280px;
+      background:var(--card); border:1px solid var(--stroke); border-radius:var(--radius);
+      box-shadow:var(--shadow); overflow:hidden; display:flex; flex-direction:column; min-height:280px;
     }
-    .cardTop{
-      display:flex;
-      gap:12px;
-      padding:12px;
-      align-items:flex-start;
-    }
+    .cardTop{ display:flex; gap:12px; padding:12px; align-items:flex-start; }
     .thumb{
-      width:92px;
-      height:92px;
-      border-radius:16px;
-      border:1px solid var(--stroke);
-      background:#fff;
-      overflow:hidden;
-      flex:0 0 auto;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      cursor:zoom-in;
-      box-shadow: 0 10px 22px rgba(0,0,0,.08);
+      width:92px; height:92px; border-radius:16px; border:1px solid var(--stroke);
+      background:#fff; overflow:hidden; flex:0 0 auto; display:flex;
+      align-items:center; justify-content:center; cursor:zoom-in;
+      box-shadow:0 10px 22px rgba(0,0,0,.08);
     }
-    .thumb img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-    }
-    .thumb .noimg{
-      color:var(--muted);
-      font-size:12px;
-      text-align:center;
-      padding:8px;
-    }
-    .meta{
-      flex:1;
-      min-width:0;
-    }
-    .refRow{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:8px;
-      margin-bottom:6px;
-    }
-    .ref{
-      font-weight:700;
-      font-size:14px;
-      letter-spacing:.2px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .badges{
-      display:flex;
-      gap:6px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
+    .thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .thumb .noimg{ color:var(--muted); font-size:12px; text-align:center; padding:8px; }
+    .meta{ flex:1; min-width:0; }
+    .refRow{ display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:6px; }
+    .ref{ font-weight:700; font-size:14px; letter-spacing:.2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .badges{ display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; }
     .badge{
-      font-size:11px;
-      padding:4px 8px;
-      border-radius:999px;
-      border:1px solid var(--stroke);
-      background:#fff;
-      color:var(--muted);
-      white-space:nowrap;
+      font-size:11px; padding:4px 8px; border-radius:999px; border:1px solid var(--stroke);
+      background:#fff; color:var(--muted); white-space:nowrap;
     }
     .badge.ok{ border-color: rgba(143,191,180,.65); color:#2a5b51; background: rgba(143,191,180,.18); }
     .badge.warn{ border-color: rgba(215,169,184,.65); color:#6b2d44; background: rgba(215,169,184,.18); }
-    .desc{
-      font-size:12.5px;
-      color:var(--muted);
-      line-height:1.35;
-      margin:0 0 8px;
-      min-height: 34px;
-    }
+    .desc{ font-size:12.5px; color:var(--muted); line-height:1.35; margin:0 0 8px; min-height:34px; }
 
-    .sizes{
-      padding: 0 12px 12px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
+    .sizes{ padding:0 12px 12px; display:flex; flex-direction:column; gap:10px; }
     .sizesTitle{
-      font-size:12px;
-      color:var(--muted);
-      margin-top:2px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
+      font-size:12px; color:var(--muted); margin-top:2px;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
     }
     .sizesTitle b{ color:var(--ink); font-weight:700; }
-    .sizeGrid{
-      display:grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap:8px;
-    }
-    @media (max-width:980px){ .sizeGrid{ grid-template-columns: repeat(5,1fr);} }
-    @media (max-width:740px){ .sizeGrid{ grid-template-columns: repeat(4,1fr);} }
-    @media (max-width:520px){ .sizeGrid{ grid-template-columns: repeat(3,1fr);} }
+    .sizeGrid{ display:grid; grid-template-columns:repeat(6,1fr); gap:8px; }
+    @media (max-width:980px){ .sizeGrid{ grid-template-columns:repeat(5,1fr);} }
+    @media (max-width:740px){ .sizeGrid{ grid-template-columns:repeat(4,1fr);} }
+    @media (max-width:520px){ .sizeGrid{ grid-template-columns:repeat(3,1fr);} }
 
     .sizeCell{
-      border:1px solid var(--stroke);
-      background:#fff;
-      border-radius:14px;
-      padding:8px 8px 10px;
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      min-height:74px;
+      border:1px solid var(--stroke); background:#fff; border-radius:14px;
+      padding:8px 8px 10px; display:flex; flex-direction:column; gap:6px; min-height:74px;
     }
     .sizeLabel{
-      font-size:12px;
-      color:var(--ink);
-      font-weight:700;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:6px;
+      font-size:12px; color:var(--ink); font-weight:700;
+      display:flex; align-items:center; justify-content:space-between; gap:6px;
     }
-    .qtyRow{
-      display:flex;
-      gap:6px;
-      align-items:center;
-      justify-content:space-between;
-    }
+    .qtyRow{ display:flex; gap:6px; align-items:center; justify-content:space-between; }
     .qtyBtn{
-      width:30px; height:30px;
-      border-radius:10px;
-      border:1px solid var(--stroke);
-      background:#fff;
-      cursor:pointer;
-      font-size:18px;
-      line-height:28px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      user-select:none;
-      box-shadow: 0 8px 16px rgba(0,0,0,.06);
+      width:30px; height:30px; border-radius:10px; border:1px solid var(--stroke);
+      background:#fff; cursor:pointer; font-size:18px; line-height:28px;
+      display:flex; align-items:center; justify-content:center; user-select:none;
+      box-shadow:0 8px 16px rgba(0,0,0,.06);
     }
-    .qtyBtn:active{ transform:scale(.98); }
-    .qtyVal{
-      flex:1;
-      text-align:center;
-      font-weight:700;
-      color:var(--ink);
-      font-size:14px;
-    }
+    .qtyVal{ flex:1; text-align:center; font-weight:700; color:var(--ink); font-size:14px; }
 
-    .orderBox{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-    .sumRow{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      font-size:14px;
-    }
+    .orderBox{ display:flex; flex-direction:column; gap:10px; }
+    .sumRow{ display:flex; align-items:center; justify-content:space-between; gap:12px; font-size:14px; }
     .sumRow span{ color:var(--muted); }
     .sumRow b{ font-size:16px; }
 
     .note{
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.35;
-      border-top:1px dashed var(--stroke);
-      padding-top:10px;
-      margin-top:2px;
+      font-size:12px; color:var(--muted); line-height:1.35;
+      border-top:1px dashed var(--stroke); padding-top:10px; margin-top:2px;
     }
 
-    /* Lightbox / Visor */
-    .img-modal{
-      position:fixed;
-      inset:0;
-      display:none;
-      z-index:9999;
+    .formGrid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px; }
+    @media (max-width:860px){ .formGrid{ grid-template-columns:1fr; } }
+    .field{ display:flex; flex-direction:column; gap:6px; }
+    .field label{ font-size:12px; color:var(--muted); }
+    .field input, .field textarea, .field select{
+      width:100%; border:1px solid var(--stroke); background:#fff; border-radius:14px;
+      padding:11px 12px; font-family:inherit; font-size:14px; color:var(--ink); outline:none;
     }
+    .field textarea{ min-height:84px; resize:vertical; }
+    .req{ color:var(--danger); font-weight:700; }
+
+    .miniInfo{ margin-top:8px; font-size:12.5px; color:var(--muted); line-height:1.35; }
+
+    .bannerError{
+      display:none; margin-top:10px; border:1px solid rgba(192,75,75,.35);
+      background:#fff2f2; color:#7b1d1d; border-radius:14px; padding:10px 12px;
+      font-size:13px; line-height:1.35;
+    }
+    .bannerError.show{ display:block; }
+
+    /* Lightbox */
+    .img-modal{ position:fixed; inset:0; display:none; z-index:9999; }
     .img-modal.is-open{ display:block; }
-    .img-modal-backdrop{
-      position:absolute;
-      inset:0;
-      background:rgba(0,0,0,.70);
-    }
+    .img-modal-backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.70); z-index:0; }
     .img-modal-content{
-      position:absolute;
-      inset:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
+      position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+      padding:18px; z-index:1;
     }
     .img-modal-content img{
-      max-width:min(980px, 92vw);
-      max-height:88vh;
-      width:auto;
-      height:auto;
-      border-radius:14px;
-      background:#fff;
-      box-shadow:0 10px 30px rgba(0,0,0,.35);
+      max-width:min(980px, 92vw); max-height:88vh; width:auto; height:auto;
+      border-radius:14px; background:#fff; box-shadow:0 10px 30px rgba(0,0,0,.35);
     }
     .img-modal-close{
-      position:absolute;
-      top:14px;
-      right:14px;
-      width:46px;
-      height:46px;
-      border-radius:999px;
-      border:0;
-      background:rgba(255,255,255,.92);
-      color:#111;
-      font-size:28px;
-      line-height:46px;
-      cursor:pointer;
-      box-shadow:0 8px 20px rgba(0,0,0,.25);
+      position:absolute; top:14px; right:14px; width:46px; height:46px;
+      border-radius:999px; border:0; background:rgba(255,255,255,.92);
+      color:#111; font-size:28px; line-height:46px; cursor:pointer;
+      box-shadow:0 8px 20px rgba(0,0,0,.25); z-index:2;
     }
-    .img-modal-close:active{ transform:scale(.98); }
   </style>
 </head>
 
@@ -464,8 +223,8 @@
     <header>
       <div class="brand">
         <div class="logo" title="Abuela Tata">
-          <!-- Si tienes tu logo en el repo: /assets/logo.png (cambia la ruta si es otra) -->
-          <img id="brandLogo" src="assets/logo.png" alt="Abuela Tata" onerror="this.style.display='none'; this.parentElement.textContent='AT'; this.parentElement.style.fontWeight='700'; this.parentElement.style.color='#6e4f3a';" />
+          <img id="brandLogo" src="assets/logo.png" alt="Abuela Tata"
+            onerror="this.style.display='none'; this.parentElement.textContent='AT';" />
         </div>
         <div>
           <h1 id="t_title">Repeticiones · Ceremonia 2026</h1>
@@ -502,45 +261,95 @@
         <div class="hint" id="t_hint">
           Nota: las <b>familias</b> son las 3 últimas cifras de la referencia. Algunas familias no se repiten y se pueden ocultar.
         </div>
+
+        <div id="loadBanner" class="bannerError"></div>
+
+        <!-- CAMPOS CLIENTE -->
+        <div class="formGrid" style="margin-top:14px;">
+          <div class="field">
+            <label><span id="t_shop">Tienda</span> <span class="req">*</span></label>
+            <input id="f_shop" type="text" placeholder="Nombre de la tienda" />
+          </div>
+          <div class="field">
+            <label><span id="t_client">Contacto</span> <span class="req">*</span></label>
+            <input id="f_client" type="text" placeholder="Nombre y apellidos" />
+          </div>
+
+          <div class="field">
+            <label><span id="t_emailField">Email</span> <span class="req">*</span></label>
+            <input id="f_email" type="email" placeholder="correo@tienda.com" />
+          </div>
+          <div class="field">
+            <label><span id="t_phone">Teléfono</span></label>
+            <input id="f_phone" type="tel" placeholder="+34 ..." />
+          </div>
+
+          <div class="field">
+            <label><span id="t_city">Ciudad</span></label>
+            <input id="f_city" type="text" placeholder="Ciudad" />
+          </div>
+          <div class="field">
+            <label><span id="t_postcode">Código postal</span> <span class="req">*</span></label>
+            <input id="f_postcode" type="text" placeholder="00000" />
+          </div>
+
+          <div class="field">
+            <label><span id="t_payment">Forma de pago</span></label>
+            <select id="f_payment">
+              <option value="">—</option>
+              <option value="Transferencia">Transferencia</option>
+              <option value="Recibo">Recibo</option>
+              <option value="Tarjeta">Tarjeta</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+          <div class="field">
+            <label><span id="t_shipping">Envío</span></label>
+            <select id="f_shipping">
+              <option value="">—</option>
+              <option value="Envío estándar">Envío estándar</option>
+              <option value="Recogida">Recogida</option>
+              <option value="Urgente">Urgente</option>
+            </select>
+          </div>
+
+          <div class="field" style="grid-column:1/-1;">
+            <label id="t_obs">Observaciones</label>
+            <textarea id="f_obs" placeholder="Añade aquí observaciones, condiciones acordadas, etc."></textarea>
+          </div>
+
+          <div class="miniInfo" id="t_clientNote" style="grid-column:1/-1;">
+            * Estos datos se incluirán en el PDF y en el email.
+          </div>
+        </div>
       </div>
 
       <div class="panel orderBox">
-        <div class="sumRow">
-          <span id="t_items">Modelos</span>
-          <b id="sumItems">0</b>
-        </div>
-        <div class="sumRow">
-          <span id="t_units">Unidades</span>
-          <b id="sumUnits">0</b>
-        </div>
-        <div class="sumRow">
-          <span id="t_warning">Recargo</span>
-          <b id="sumSurcharge">0%</b>
-        </div>
+        <div class="sumRow"><span id="t_items">Modelos</span><b id="sumItems">0</b></div>
+        <div class="sumRow"><span id="t_units">Unidades</span><b id="sumUnits">0</b></div>
+        <div class="sumRow"><span id="t_warning">Recargo</span><b id="sumSurcharge">0%</b></div>
 
         <div class="actions">
-          <button class="btn secondary" type="button" onclick="clearOrder()">
-            <span>↺</span> <span id="t_clear">Vaciar</span>
-          </button>
-          <button class="btn" type="button" onclick="exportPDF()">
-            <span>🧾</span> <span id="t_pdf">Exportar PDF (con fotos)</span>
-          </button>
-          <button class="btn danger" type="button" onclick="sendEmail()">
-            <span>✉️</span> <span id="t_email">Enviar email</span>
-          </button>
+          <button class="btn secondary" type="button" onclick="clearOrder()"><span>↺</span><span id="t_clear">Vaciar</span></button>
+          <button class="btn" type="button" onclick="exportPDF()"><span>🧾</span><span id="t_pdf">Descargar PDF (con fotos)</span></button>
+          <button class="btn danger" type="button" onclick="sendEmail()"><span>✉️</span><span id="t_email">Enviar email</span></button>
         </div>
 
         <div class="note" id="t_note">
-          * Si pides <b>menos de 3 unidades</b> de un modelo, se aplica <b>+10%</b> de recargo en ese modelo (según tu regla).
+          * Si pides <b>menos de 3 unidades</b> de un modelo, se aplica <b>+10%</b> de recargo en ese modelo.
+        </div>
+
+        <div class="note" id="t_conditions">
+          <b>Condiciones / forma de pago / envío:</b><br/>
+          (Pega aquí el texto exacto de las observaciones de tu tarifa para que siempre salga en la app, PDF y email)
         </div>
       </div>
     </div>
 
     <div id="grid" class="grid"></div>
-
   </div>
 
-  <!-- Lightbox / Visor de imagen -->
+  <!-- Lightbox -->
   <div id="imgModal" class="img-modal" aria-hidden="true">
     <button id="imgModalClose" class="img-modal-close" type="button" aria-label="Cerrar">×</button>
     <div class="img-modal-backdrop"></div>
@@ -550,13 +359,15 @@
   </div>
 
 <script>
-/* ==========================
-   CONFIG
-========================== */
-// Familias que NO se repiten (las 3 últimas cifras)
+/* ======= RUTAS CORRECTAS SEGÚN LO QUE ME DICES ======= */
+const DATA_URL = "./data/tarifa.json";  // ✅ tu JSON aquí
+const IMAGE_BASE = "./images/";         // ✅ tus fotos aquí
+const EMAIL_TO = "info@abuelatata.com";
+
+/* Familias NO repetibles */
 const NON_REPEAT_FAMILIES = new Set(["404","407","410","411","412","413","414"]);
 
-// Tallajes por tipo (2 primeras cifras)
+/* Tallajes por tipo */
 const SIZE_SETS = {
   "11": ["3M","6M","9M","12M","18M","2Y"],
   "12": ["3M","6M","9M","18M","2Y","3Y","4Y"],
@@ -569,94 +380,68 @@ const SIZE_SETS = {
   "08": ["TU"]
 };
 
-// Ruta de fotos (ajusta si tu carpeta se llama distinto)
-const IMAGE_BASE = "images/"; // ej: images/4306141.jpg
-
-// Email destino (si quieres poner fijo el tuyo, cámbialo aquí)
-const EMAIL_TO = "info@abuelatata.com";
-
-/* ==========================
-   I18N
-========================== */
+/* ===== I18N ===== */
 let LANG = "es";
 const I18N = {
   es: {
-    title: "Repeticiones · Ceremonia 2026",
-    subtitle: "Selecciona referencias y tallas. Pulsa la foto para verla grande.",
-    onlyPhotos: "Solo con foto",
-    hideNoRepeat: "Ocultar NO repetibles",
-    hint: "Nota: las <b>familias</b> son las 3 últimas cifras de la referencia. Algunas familias no se repiten y se pueden ocultar.",
-    items: "Modelos",
-    units: "Unidades",
-    warning: "Recargo",
-    clear: "Vaciar",
-    pdf: "Exportar PDF (con fotos)",
-    email: "Enviar email",
-    note: "* Si pides <b>menos de 3 unidades</b> de un modelo, se aplica <b>+10%</b> de recargo en ese modelo (según tu regla).",
-    searchPH: "Buscar por referencia, familia o descripción…",
-    noimg: "Sin foto",
-    family: "Familia",
-    type: "Tipo",
-    quantities: "Cantidades",
-    total: "Total",
-    surcharge10: "+10% (<3 uds)",
-    ok: "OK",
-    noRepeat: "No repetible",
-    mailSubject: "Repeticiones · Ceremonia 2026",
-    mailIntro: "Hola,\n\nAdjunto el pedido de repeticiones:\n\n",
-    mailEnd: "\n\nGracias.\n"
+    title:"Repeticiones · Ceremonia 2026",
+    subtitle:"Selecciona referencias y tallas. Pulsa la foto para verla grande.",
+    onlyPhotos:"Solo con foto",
+    hideNoRepeat:"Ocultar NO repetibles",
+    hint:"Nota: las <b>familias</b> son las 3 últimas cifras de la referencia. Algunas familias no se repiten y se pueden ocultar.",
+    items:"Modelos", units:"Unidades", warning:"Recargo",
+    clear:"Vaciar", pdf:"Descargar PDF (con fotos)", email:"Enviar email",
+    note:"* Si pides <b>menos de 3 unidades</b> de un modelo, se aplica <b>+10%</b> de recargo en ese modelo.",
+    searchPH:"Buscar por referencia, familia o descripción…",
+    noimg:"Sin foto", family:"Familia", type:"Tipo", quantities:"Cantidades", total:"Total",
+    surcharge10:"+10% (<3 uds)", ok:"OK", noRepeat:"No repetible",
+    mailSubject:"Repeticiones · Ceremonia 2026",
+    mailIntro:"Hola,\n\nAdjunto el pedido de repeticiones:\n\n",
+    mailEnd:"\n\nGracias.\n",
+    shop:"Tienda", client:"Contacto", emailField:"Email", phone:"Teléfono", city:"Ciudad", postcode:"Código postal",
+    payment:"Forma de pago", shipping:"Envío", obs:"Observaciones",
+    clientNote:"* Estos datos se incluirán en el PDF y en el email.",
+    needClient:"Faltan datos del cliente: Tienda, Contacto, Email y Código Postal."
   },
   en: {
-    title: "Reorders · Ceremony 2026",
-    subtitle: "Select styles and sizes. Tap the photo to view it larger.",
-    onlyPhotos: "Photos only",
-    hideNoRepeat: "Hide NON-repeatable",
-    hint: "Note: <b>families</b> are the last 3 digits of the reference. Some families do not repeat and can be hidden.",
-    items: "Styles",
-    units: "Units",
-    warning: "Surcharge",
-    clear: "Clear",
-    pdf: "Export PDF (with photos)",
-    email: "Send email",
-    note: "* If you order <b>less than 3 units</b> of a style, a <b>+10%</b> surcharge applies to that style (as per your rule).",
-    searchPH: "Search by reference, family or description…",
-    noimg: "No photo",
-    family: "Family",
-    type: "Type",
-    quantities: "Quantities",
-    total: "Total",
-    surcharge10: "+10% (<3 units)",
-    ok: "OK",
-    noRepeat: "Non-repeatable",
-    mailSubject: "Reorders · Ceremony 2026",
-    mailIntro: "Hello,\n\nPlease find the reorder:\n\n",
-    mailEnd: "\n\nThank you.\n"
+    title:"Reorders · Ceremony 2026",
+    subtitle:"Select styles and sizes. Tap the photo to view it larger.",
+    onlyPhotos:"Photos only",
+    hideNoRepeat:"Hide NON-repeatable",
+    hint:"Note: <b>families</b> are the last 3 digits of the reference. Some families do not repeat and can be hidden.",
+    items:"Styles", units:"Units", warning:"Surcharge",
+    clear:"Clear", pdf:"Download PDF (with photos)", email:"Send email",
+    note:"* If you order <b>less than 3 units</b> of a style, a <b>+10%</b> surcharge applies to that style.",
+    searchPH:"Search by reference, family or description…",
+    noimg:"No photo", family:"Family", type:"Type", quantities:"Quantities", total:"Total",
+    surcharge10:"+10% (<3 units)", ok:"OK", noRepeat:"Non-repeatable",
+    mailSubject:"Reorders · Ceremony 2026",
+    mailIntro:"Hello,\n\nPlease find the reorder:\n\n",
+    mailEnd:"\n\nThank you.\n",
+    shop:"Store", client:"Contact", emailField:"Email", phone:"Phone", city:"City", postcode:"Postcode",
+    payment:"Payment method", shipping:"Shipping", obs:"Notes",
+    clientNote:"* These details will be included in the PDF and email.",
+    needClient:"Missing customer details: Store, Contact, Email and Postcode."
   },
   pt: {
-    title: "Reposições · Cerimónia 2026",
-    subtitle: "Seleciona referências e tamanhos. Toca na foto para ver maior.",
-    onlyPhotos: "Só com foto",
-    hideNoRepeat: "Ocultar NÃO repetíveis",
-    hint: "Nota: as <b>famílias</b> são os 3 últimos dígitos da referência. Algumas famílias não se repetem e podem ser ocultadas.",
-    items: "Modelos",
-    units: "Unidades",
-    warning: "Acréscimo",
-    clear: "Limpar",
-    pdf: "Exportar PDF (com fotos)",
-    email: "Enviar email",
-    note: "* Se pedires <b>menos de 3 unidades</b> de um modelo, aplica-se <b>+10%</b> de acréscimo nesse modelo (segundo a tua regra).",
-    searchPH: "Procurar por referência, família ou descrição…",
-    noimg: "Sem foto",
-    family: "Família",
-    type: "Tipo",
-    quantities: "Quantidades",
-    total: "Total",
-    surcharge10: "+10% (<3 unid.)",
-    ok: "OK",
-    noRepeat: "Não repetível",
-    mailSubject: "Reposições · Cerimónia 2026",
-    mailIntro: "Olá,\n\nSegue o pedido de reposições:\n\n",
-    mailEnd: "\n\nObrigado.\n"
+    title:"Reposições · Cerimónia 2026",
+    subtitle:"Seleciona referências e tamanhos. Toca na foto para ver maior.",
+    onlyPhotos:"Só com foto",
+    hideNoRepeat:"Ocultar NÃO repetíveis",
+    hint:"Nota: as <b>famílias</b> são os 3 últimos dígitos da referência. Algumas famílias não se repetem e podem ser ocultadas.",
+    items:"Modelos", units:"Unidades", warning:"Acréscimo",
+    clear:"Limpar", pdf:"Descarregar PDF (com fotos)", email:"Enviar email",
+    note:"* Se pedires <b>menos de 3 unidades</b> de um modelo, aplica-se <b>+10%</b> de acréscimo nesse modelo.",
+    searchPH:"Procurar por referência, família ou descrição…",
+    noimg:"Sem foto", family:"Família", type:"Tipo", quantities:"Quantidades", total:"Total",
+    surcharge10:"+10% (<3 unid.)", ok:"OK", noRepeat:"Não repetível",
+    mailSubject:"Reposições · Cerimónia 2026",
+    mailIntro:"Olá,\n\nSegue o pedido de reposições:\n\n",
+    mailEnd:"\n\nObrigado.\n",
+    shop:"Loja", client:"Contacto", emailField:"Email", phone:"Telefone", city:"Cidade", postcode:"Código postal",
+    payment:"Forma de pagamento", shipping:"Envio", obs:"Observações",
+    clientNote:"* Estes dados serão incluídos no PDF e no email.",
+    needClient:"Faltam dados do cliente: Loja, Contacto, Email e Código Postal."
   }
 };
 
@@ -681,30 +466,37 @@ function setLang(l){
   document.getElementById("t_note").innerHTML = t.note;
   document.getElementById("q").placeholder = t.searchPH;
 
+  document.getElementById("t_shop").textContent = t.shop;
+  document.getElementById("t_client").textContent = t.client;
+  document.getElementById("t_emailField").textContent = t.emailField;
+  document.getElementById("t_phone").textContent = t.phone;
+  document.getElementById("t_city").textContent = t.city;
+  document.getElementById("t_postcode").textContent = t.postcode;
+  document.getElementById("t_payment").textContent = t.payment;
+  document.getElementById("t_shipping").textContent = t.shipping;
+  document.getElementById("t_obs").textContent = t.obs;
+  document.getElementById("t_clientNote").textContent = t.clientNote;
+
   render();
 }
 
-/* ==========================
-   DATA
-========================== */
-// Espera un JSON en el repo. Formato recomendado:
-// [
-//   { "ref":"4306141", "desc":"...", "img":"images/4306141.jpg" }
-// ]
+/* ===== DATA + ORDER ===== */
 let PRODUCTS = [];
-const ORDER = new Map(); // ref -> { sizes: {S:qty}, desc, img, type, family }
+const ORDER = new Map();
 
 function getType(ref){ return (ref||"").toString().slice(0,2); }
 function getFamily(ref){ return (ref||"").toString().slice(-3); }
-function getSizesForType(type){
-  return SIZE_SETS[type] || ["TU"];
-}
+function getSizesForType(type){ return SIZE_SETS[type] || ["TU"]; }
 
-function guessImgForRef(ref){
-  // intenta varias extensiones típicas
-  // (si tú sabes la extensión exacta, deja solo una)
-  const base = IMAGE_BASE + ref;
-  return [base + ".jpg", base + ".jpeg", base + ".png", base + ".webp"];
+function showLoadBanner(msg){
+  const b = document.getElementById("loadBanner");
+  b.textContent = msg;
+  b.classList.add("show");
+}
+function hideLoadBanner(){
+  const b = document.getElementById("loadBanner");
+  b.classList.remove("show");
+  b.textContent = "";
 }
 
 async function urlExists(url){
@@ -715,11 +507,13 @@ async function urlExists(url){
     return false;
   }
 }
-
+function guessImgForRef(ref){
+  const base = IMAGE_BASE + ref;
+  return [base + ".jpg", base + ".jpeg", base + ".png", base + ".webp"];
+}
 async function resolveImageUrl(p){
   if (p.img) return p.img;
-  const ref = p.ref;
-  const tries = guessImgForRef(ref);
+  const tries = guessImgForRef(p.ref);
   for (const u of tries){
     if (await urlExists(u)) return u;
   }
@@ -727,40 +521,40 @@ async function resolveImageUrl(p){
 }
 
 async function loadProducts(){
-  // 1) intenta products.json
+  hideLoadBanner();
+  const stamp = `cb=${Date.now()}`;
+  const url = DATA_URL.includes("?") ? `${DATA_URL}&${stamp}` : `${DATA_URL}?${stamp}`;
   try{
-    const r = await fetch("products.json", { cache:"no-store" });
-    if (r.ok){
-      const data = await r.json();
-      PRODUCTS = (Array.isArray(data) ? data : []).map(x => ({
-        ref: (x.ref||x.referencia||x.codigo||"").toString().trim(),
-        desc: (x.desc||x.descripcion||x.nombre||"").toString().trim(),
-        img: x.img || x.foto || null
-      })).filter(x => x.ref);
+    const r = await fetch(url, { cache:"no-store" });
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const raw = await r.json();
+    if (!Array.isArray(raw)) throw new Error("El JSON no es un array");
+
+    // Adaptamos nombres posibles de campos (ref/referencia/codigo etc.)
+    PRODUCTS = raw.map(x => ({
+      ref: (x.ref || x.referencia || x.codigo || x.Referencia || x.Codigo || "").toString().trim(),
+      desc: (x.desc || x.descripcion || x.nombre || x.producto || x.Descripcion || "").toString().trim(),
+      img: (x.img || x.foto || x.imagen || x.Imagen || "").toString().trim() || null
+    })).filter(x=>x.ref);
+
+    if (!PRODUCTS.length){
+      showLoadBanner("⚠️ He cargado ./data/tarifa.json pero no encuentro referencias (campo ref/referencia/codigo).");
     }
-  }catch(e){}
 
-  // 2) fallback (si no existe products.json, no rompemos la app)
-  if (!PRODUCTS.length){
-    PRODUCTS = [
-      { ref:"4306141", desc:"(Ejemplo) Modelo 4306141", img:null },
-      { ref:"1225406", desc:"(Ejemplo) Modelo 1225406", img:null }
-    ];
+    for (const p of PRODUCTS){
+      p.type = getType(p.ref);
+      p.family = getFamily(p.ref);
+      p.imgResolved = await resolveImageUrl(p);
+    }
+
+    render();
+  }catch(e){
+    showLoadBanner("⚠️ No se ha podido cargar ./data/tarifa.json. Revisa que esté publicado en GitHub Pages y que el JSON sea válido. ("+e.message+")");
+    PRODUCTS = [];
+    render();
   }
-
-  // Pre-resolver URLs de imágenes (para “Solo con foto” y para PDF)
-  for (const p of PRODUCTS){
-    p.type = getType(p.ref);
-    p.family = getFamily(p.ref);
-    p.imgResolved = await resolveImageUrl(p);
-  }
-
-  render();
 }
 
-/* ==========================
-   RENDER
-========================== */
 function getOrderEntry(ref){
   if (!ORDER.has(ref)){
     const p = PRODUCTS.find(x=>x.ref===ref) || { ref, desc:"", type:getType(ref), family:getFamily(ref), imgResolved:null };
@@ -770,20 +564,11 @@ function getOrderEntry(ref){
   }
   return ORDER.get(ref);
 }
-
-function sumForRef(entry){
-  return Object.values(entry.sizes).reduce((a,b)=>a+b,0);
-}
-function calcSurchargePct(entry){
-  const total = sumForRef(entry);
-  return (total>0 && total<3) ? 10 : 0;
-}
+function sumForRef(entry){ return Object.values(entry.sizes).reduce((a,b)=>a+b,0); }
+function calcSurchargePct(entry){ const total = sumForRef(entry); return (total>0 && total<3) ? 10 : 0; }
 
 function updateSummary(){
-  let models = 0;
-  let units = 0;
-  let anySurcharge = false;
-
+  let models = 0, units = 0, anySurcharge = false;
   for (const entry of ORDER.values()){
     const t = sumForRef(entry);
     if (t>0){
@@ -872,17 +657,15 @@ function render(){
     b2.textContent = `${t.type}: ${p.type}`;
     badges.appendChild(b2);
 
+    const b3 = document.createElement("span");
     if (NON_REPEAT_FAMILIES.has(p.family)){
-      const b3 = document.createElement("span");
       b3.className="badge warn";
       b3.textContent = t.noRepeat;
-      badges.appendChild(b3);
     }else{
-      const b3 = document.createElement("span");
       b3.className="badge ok";
       b3.textContent = t.ok;
-      badges.appendChild(b3);
     }
+    badges.appendChild(b3);
 
     refRow.appendChild(ref);
     refRow.appendChild(badges);
@@ -955,7 +738,6 @@ function render(){
 
     sizesWrap.appendChild(sizeGrid);
 
-    // Recargo visual si <3 uds
     if (surcharge){
       const note = document.createElement("div");
       note.className="hint";
@@ -966,21 +748,18 @@ function render(){
 
     card.appendChild(top);
     card.appendChild(sizesWrap);
-
     grid.appendChild(card);
   }
 
   updateSummary();
 }
 
-/* ==========================
-   LIGHTBOX
-========================== */
-function openImgModal(src, alt = "Imagen del producto"){
+/* ===== Lightbox (cierres OK) ===== */
+function openImgModal(src, alt="Imagen del producto"){
   const modal = document.getElementById("imgModal");
   const img = document.getElementById("imgModalImg");
   modal.classList.add("is-open");
-  modal.setAttribute("aria-hidden", "false");
+  modal.setAttribute("aria-hidden","false");
   img.src = src;
   img.alt = alt;
   document.body.style.overflow = "hidden";
@@ -989,24 +768,51 @@ function closeImgModal(){
   const modal = document.getElementById("imgModal");
   const img = document.getElementById("imgModalImg");
   modal.classList.remove("is-open");
-  modal.setAttribute("aria-hidden", "true");
+  modal.setAttribute("aria-hidden","true");
   img.src = "";
   document.body.style.overflow = "";
 }
+
 document.addEventListener("DOMContentLoaded", () => {
   const modal = document.getElementById("imgModal");
-  const closeBtn = document.getElementById("imgModalClose");
-  const backdrop = modal.querySelector(".img-modal-backdrop");
-  closeBtn.addEventListener("click", closeImgModal);
-  backdrop.addEventListener("click", closeImgModal);
-  document.addEventListener("keydown", (e) => {
+  document.getElementById("imgModalClose").addEventListener("click", closeImgModal);
+  modal.querySelector(".img-modal-backdrop").addEventListener("click", closeImgModal);
+  document.addEventListener("keydown", (e)=>{
     if (e.key === "Escape" && modal.classList.contains("is-open")) closeImgModal();
   });
 });
 
-/* ==========================
-   PDF (con miniaturas)
-========================== */
+/* ===== PDF + EMAIL ===== */
+function getClientData(){
+  return {
+    shop:(document.getElementById("f_shop").value||"").trim(),
+    client:(document.getElementById("f_client").value||"").trim(),
+    email:(document.getElementById("f_email").value||"").trim(),
+    phone:(document.getElementById("f_phone").value||"").trim(),
+    city:(document.getElementById("f_city").value||"").trim(),
+    postcode:(document.getElementById("f_postcode").value||"").trim(),
+    payment:(document.getElementById("f_payment").value||"").trim(),
+    shipping:(document.getElementById("f_shipping").value||"").trim(),
+    obs:(document.getElementById("f_obs").value||"").trim(),
+    conditions:(document.getElementById("t_conditions").innerText||"").trim()
+  };
+}
+function validateClient(){
+  const t = I18N[LANG];
+  const c = getClientData();
+  if (!c.shop || !c.client || !c.email || !c.postcode){
+    alert(t.needClient);
+    return false;
+  }
+  return true;
+}
+function formatQuantities(entry){
+  const parts = [];
+  for (const [s,q] of Object.entries(entry.sizes)){
+    if (q>0) parts.push(`${s}:${q}`);
+  }
+  return parts.join(" · ");
+}
 async function imgToDataURL(url, maxPx = 120) {
   return new Promise((resolve) => {
     const img = new Image();
@@ -1015,88 +821,77 @@ async function imgToDataURL(url, maxPx = 120) {
       const scale = Math.min(maxPx / img.width, maxPx / img.height, 1);
       const w = Math.round(img.width * scale);
       const h = Math.round(img.height * scale);
-
       const c = document.createElement("canvas");
       c.width = w; c.height = h;
-      const ctx = c.getContext("2d");
-      ctx.drawImage(img, 0, 0, w, h);
+      c.getContext("2d").drawImage(img, 0, 0, w, h);
       resolve(c.toDataURL("image/png"));
     };
     img.onerror = () => resolve(null);
     img.src = url;
   });
 }
-
 async function buildThumbCache(orderItems) {
-  const cache = new Map(); // ref -> dataURL
+  const cache = new Map();
   for (const it of orderItems) {
-    const ref = it.ref;
-    if (!it.img) { cache.set(ref, null); continue; }
+    if (!it.img) { cache.set(it.ref, null); continue; }
     const dataUrl = await imgToDataURL(it.img, 120);
-    cache.set(ref, dataUrl);
+    cache.set(it.ref, dataUrl);
   }
   return cache;
-}
-
-function formatQuantities(entry){
-  // "3M:1 · 6M:0 · 9M:2" pero solo >0
-  const parts = [];
-  for (const [s,q] of Object.entries(entry.sizes)){
-    if (q>0) parts.push(`${s}:${q}`);
-  }
-  return parts.join(" · ");
 }
 
 async function exportPDF(){
   const { jsPDF } = window.jspdf;
   const t = I18N[LANG];
+  if (!validateClient()) return;
 
+  const client = getClientData();
   const orderItems = Array.from(ORDER.values())
     .map(e => ({
-      ref:e.ref,
-      desc:e.desc || "",
-      img:e.img || null,
-      quantities: formatQuantities(e),
-      total: sumForRef(e),
-      surcharge: calcSurchargePct(e)
+      ref:e.ref, desc:e.desc||"", img:e.img||null,
+      quantities:formatQuantities(e), total:sumForRef(e),
+      surcharge:calcSurchargePct(e)
     }))
     .filter(x => x.total>0);
 
-  if (!orderItems.length){
-    alert("No hay artículos en el pedido.");
-    return;
-  }
+  if (!orderItems.length){ alert("No hay artículos en el pedido."); return; }
 
   const thumbs = await buildThumbCache(orderItems);
-
   const doc = new jsPDF({ unit:"pt", format:"a4" });
 
-  doc.setFont("helvetica","bold");
-  doc.setFontSize(15);
+  doc.setFont("helvetica","bold"); doc.setFontSize(15);
   doc.text(t.mailSubject, 40, 46);
-
-  doc.setFont("helvetica","normal");
-  doc.setFontSize(10);
+  doc.setFont("helvetica","normal"); doc.setFontSize(10);
   doc.text(new Date().toLocaleString(), 40, 64);
 
-  const head = [["FOTO", "REF", "DESCRIPCIÓN", "CANTIDADES", "TOTAL", "RECARGO"]];
-  const body = orderItems.map(it => [
-    "", it.ref, it.desc, it.quantities || "-", String(it.total), it.surcharge ? "10%" : "0%"
-  ]);
+  const lines = [
+    `Tienda: ${client.shop}`,
+    `Contacto: ${client.client}`,
+    `Email: ${client.email}`,
+    `Teléfono: ${client.phone || "-"}`,
+    `Ciudad: ${client.city || "-"}`,
+    `CP: ${client.postcode}`,
+    `Pago: ${client.payment || "-"}`,
+    `Envío: ${client.shipping || "-"}`
+  ];
+  doc.text(lines, 40, 84);
+  const yAfterClient = 84 + lines.length*12 + 8;
+
+  const head = [["FOTO","REF","DESCRIPCIÓN","CANTIDADES","TOTAL","RECARGO"]];
+  const body = orderItems.map(it => ["", it.ref, it.desc, it.quantities||"-", String(it.total), it.surcharge ? "10%" : "0%"]);
 
   doc.autoTable({
-    startY: 84,
-    head,
-    body,
-    styles: { font:"helvetica", fontSize:9, cellPadding:6, valign:"middle" },
-    headStyles: { fontStyle:"bold" },
-    columnStyles: {
-      0:{ cellWidth:60 },   // foto
-      1:{ cellWidth:70 },   // ref
-      2:{ cellWidth:175 },  // desc
-      3:{ cellWidth:150 },  // cantidades
-      4:{ cellWidth:45, halign:"right" }, // total
-      5:{ cellWidth:55, halign:"right" }  // recargo
+    startY: yAfterClient,
+    head, body,
+    styles:{ font:"helvetica", fontSize:9, cellPadding:6, valign:"middle" },
+    headStyles:{ fontStyle:"bold" },
+    columnStyles:{
+      0:{ cellWidth:60 },
+      1:{ cellWidth:70 },
+      2:{ cellWidth:175 },
+      3:{ cellWidth:150 },
+      4:{ cellWidth:45, halign:"right" },
+      5:{ cellWidth:55, halign:"right" }
     },
     didDrawCell: function (data){
       if (data.section==="body" && data.column.index===0){
@@ -1115,16 +910,27 @@ async function exportPDF(){
     }
   });
 
+  const finalY = doc.lastAutoTable.finalY + 18;
+  doc.setFont("helvetica","bold"); doc.setFontSize(11);
+  doc.text("Observaciones:", 40, finalY);
+  doc.setFont("helvetica","normal"); doc.setFontSize(10);
+  doc.text((client.obs || "-").slice(0,1200), 40, finalY+14, { maxWidth:515 });
+
+  const condY = finalY + 70;
+  doc.setFont("helvetica","bold"); doc.setFontSize(11);
+  doc.text("Condiciones / Forma de pago / Envío:", 40, condY);
+  doc.setFont("helvetica","normal"); doc.setFontSize(10);
+  doc.text((client.conditions || "-").slice(0,1600), 40, condY+14, { maxWidth:515 });
+
   doc.save("repeticiones_ceremonia_2026.pdf");
 }
 
-/* ==========================
-   EMAIL
-========================== */
 function sendEmail(){
   const t = I18N[LANG];
+  if (!validateClient()) return;
 
-  const orderItems = Array.from(ORDER.values())
+  const client = getClientData();
+  const orderLines = Array.from(ORDER.values())
     .filter(e => sumForRef(e)>0)
     .map(e => {
       const total = sumForRef(e);
@@ -1132,21 +938,28 @@ function sendEmail(){
       return `- ${e.ref} · ${formatQuantities(e) || "-"} · TOTAL ${total}${rec}`;
     });
 
-  if (!orderItems.length){
-    alert("No hay artículos en el pedido.");
-    return;
-  }
+  if (!orderLines.length){ alert("No hay artículos en el pedido."); return; }
 
-  const body = t.mailIntro + orderItems.join("\n") + t.mailEnd;
+  const clientBlock =
+`DATOS CLIENTE
+Tienda: ${client.shop}
+Contacto: ${client.client}
+Email: ${client.email}
+Teléfono: ${client.phone || "-"}
+Ciudad: ${client.city || "-"}
+CP: ${client.postcode}
+Pago: ${client.payment || "-"}
+Envío: ${client.shipping || "-"}
 
-  const subject = encodeURIComponent(t.mailSubject);
-  const bodyEnc = encodeURIComponent(body);
-  window.location.href = `mailto:${EMAIL_TO}?subject=${subject}&body=${bodyEnc}`;
+`;
+
+  const obsBlock = `OBSERVACIONES\n${client.obs || "-"}\n\n`;
+  const condBlock = `CONDICIONES / FORMA DE PAGO / ENVÍO\n${client.conditions || "-"}\n`;
+
+  const body = t.mailIntro + clientBlock + "PEDIDO\n" + orderLines.join("\n") + "\n\n" + obsBlock + condBlock + t.mailEnd;
+  window.location.href = `mailto:${EMAIL_TO}?subject=${encodeURIComponent(t.mailSubject)}&body=${encodeURIComponent(body)}`;
 }
 
-/* ==========================
-   UTIL
-========================== */
 function clearOrder(){
   for (const e of ORDER.values()){
     for (const s of Object.keys(e.sizes)) e.sizes[s]=0;
@@ -1154,19 +967,14 @@ function clearOrder(){
   render();
 }
 
-/* ==========================
-   EVENTS
-========================== */
+/* Events */
 document.getElementById("q").addEventListener("input", ()=>render());
 document.getElementById("onlyWithPhoto").addEventListener("change", ()=>render());
 document.getElementById("hideNoRepeat").addEventListener("change", ()=>render());
 
-/* ==========================
-   INIT
-========================== */
+/* Init */
 setLang("es");
 loadProducts();
 </script>
-
 </body>
 </html>
