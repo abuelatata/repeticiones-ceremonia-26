@@ -1051,83 +1051,20 @@
     y+=5; doc.setDrawColor(200); doc.line(margin, y, 210-margin, y); y+=5;
     doc.setFont("times","normal");
 
-   for(const ln of lines){
-  // === Anchos de columna (mm) ===
-  const xImg = margin;           // imagen: 20mm
-  const wImg = 20;
+    for(const ln of lines){
+      const rowH=22;
+      if(y + rowH > 287){ doc.addPage(); y=16; }
 
-  const xRef = margin + 26;      // ref/desc
-  const wRef = 62;
+      let imgData=null;
+      if(ln.imgUrl) imgData = await urlToDataURL(ln.imgUrl);
 
-  const xSizes = margin + 92;    // tallas (REDUCIMOS ancho para que no pise precio)
-  const wSizes = 62;
-
-  const xPrice = 168;            // precio (columna fija derecha)
-  const xAmount = 198;           // importe (columna fija derecha)
-
-  // Prepara textos en líneas (wrap)
-  const refDesc = `${ln.ref} · ${ln.desc}`;
-  const refLines = doc.splitTextToSize(refDesc, wRef);
-
-  // Junta tallas y las parte con ancho fijo
-  const sizesText = (ln.tallas || "").replace(/\s*·\s*/g, " · ");
-  const sizeLines = doc.splitTextToSize(sizesText, wSizes);
-
-  // Calcula alto dinámico
-  const lineH = 4.2; // altura por línea
-  const minRow = 22; // mínimo para que quepa la imagen
-  const textBlockH = Math.max(refLines.length, sizeLines.length) * lineH;
-  const rowH = Math.max(minRow, textBlockH + 8);
-
-  // Salto de página si no cabe
-  if(y + rowH > 287){ doc.addPage(); y = 16; }
-
-  // Imagen
-  let imgData=null;
-  if(ln.imgUrl) imgData = await urlToDataURL(ln.imgUrl);
-
- if (imgData) {
-  try {
-    doc.addImage(imgData, "JPEG", xImg, y - 1, wImg, wImg);
-  } catch (e) {
-    try {
-      doc.addImage(imgData, "PNG", xImg, y - 1, wImg, wImg);
-    } catch (_) {}
-  }
-} else {
-  doc.setDrawColor(210);
-  doc.rect(xImg, y - 1, wImg, wImg);
-  doc.setFontSize(7);
-  doc.text("Sin foto", xImg + wImg / 2, y + 9, { align: "center" });
-  doc.setFontSize(9);
-}
-
-  // Textos
-  doc.text(refLines, xRef, y+3);
-  doc.text(sizeLines, xSizes, y+3);
-
-  // Precio e importe SIEMPRE en la primera línea de la fila (para no “bailar”)
-  doc.text(eur(ln.precio), xPrice, y+3, {align:"right"});
-  doc.setFont("times","bold");
-  doc.text(eur(ln.subtotal), xAmount, y+3, {align:"right"});
-  doc.setFont("times","normal");
-
-  // Aviso +10% abajo (si aplica)
-  if(ln.inc){
-    doc.setTextColor(192,57,43);
-    doc.setFont("times","bold");
-    doc.text("+10% (1–2 uds)", xRef, y + rowH - 4);
-    doc.setFont("times","normal");
-    doc.setTextColor(0,0,0);
-  }
-
-  total += ln.subtotal;
-
-  // Línea separadora al final de la fila
-  y += rowH;
-  doc.setDrawColor(235);
-  doc.line(margin, y-2, 210-margin, y-2);
-}
+      if(imgData){
+        try{ doc.addImage(imgData, "JPEG", margin, y-1, 20, 20); }
+        catch(e){ try{ doc.addImage(imgData, "PNG", margin, y-1, 20, 20); }catch(_){ } }
+      }else{
+        doc.setDrawColor(210); doc.rect(margin, y-1, 20, 20);
+        doc.setFontSize(7); doc.text("Sin foto", margin+10, y+9, {align:"center"}); doc.setFontSize(9);
+      }
 
       const refDesc = `${ln.ref} · ${ln.desc}`;
       doc.text(doc.splitTextToSize(refDesc, 62), margin+26, y+3);
