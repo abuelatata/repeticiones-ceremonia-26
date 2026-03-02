@@ -1,0 +1,98 @@
+async function loadData(){
+  let res, json;
+  try{
+    res = await fetch(DATA_URL, {cache:"no-store"});
+    if(!res.ok) throw new Error("HTTP " + res.status);
+    json = await res.json();
+  }catch(e){
+    console.error(e);
+    toast("⚠️ No se ha podido cargar ./data/tarifa.json");
+    $("countPill").textContent = "Error carga JSON";
+    return;
+  }
+
+  const items = Array.isArray(json) ? json : (json.items || json.articulos || json.data || []);
+
+  // Busca una clave dentro del objeto aunque varíe el nombre: "Precio", "PRECIO ", "pvp", etc.
+  const pick = (obj, aliases) => {
+    if (!obj || typeof obj !== "object") return undefined;
+    const keys = Object.keys(obj);
+    const norm = (s)=>String(s).trim().toLowerCase();
+
+    // 1) match directo por alias
+    for (const a of aliases){
+      const hit = keys.find(k => norm(k) === norm(a));
+      if (hit != null) return obj[hit];
+    }
+
+    // 2) match por "contiene" (por si viene como "Precio Neto", "Precio (€)", etc.)
+    for (const a of aliases){
+      const hit = keys.find(k => norm(k).includes(norm(a)));
+      if (hit != null) return obj[hit];
+    }
+
+    return undefined;
+  };
+
+  const normItems = items.map(x=>{
+    const referencia = String(
+      pick(x, ["referencia","ref","reference","codigo","código","sku","id"])
+      ?? ""
+    ).trim();
+
+    const descripcion = String(
+      pick(x, ["descripcion","descripción","desc","description","nombre","name"])
+      ?? ""
+    ).trim();
+
+    const precioRaw =
+      pick(x, ["precio","pvp","price","importe","neto","precio_neto","precio neto","precio (€)"]);
+
+    const precio = toNumberPrice(precioRaw);
+
+    const tallas = pick(x, ["tallas","talla","sizes","size"]);
+
+    return { referencia, descripcion, precio, tallas };
+  }).filter(x=>x.referencia);
+
+  ALL = normItems.filter(isRepeatable);
+  ALL.sort((a,b)=> String(a.referencia).localeCompare(String(b.referencia), "es"));
+
+  VIEW = [...ALL];
+  render();
+  $("countPill").textContent = `${VIEW.length} artículos`;
+
+  // Debug rápido en consola (por si quieres comprobar 3 refs)
+  console.log("Ejemplo precios:", ALL.slice(0,5).map(i=>({ref:i.referencia, precio:i.precio})));
+}
+  const normItems = items.map(x=>{
+    const referencia = String(
+      pick(x, ["referencia","ref","reference","codigo","código","sku","id"])
+      ?? ""
+    ).trim();
+
+    const descripcion = String(
+      pick(x, ["descripcion","descripción","desc","description","nombre","name"])
+      ?? ""
+    ).trim();
+
+    const precioRaw =
+      pick(x, ["precio","pvp","price","importe","neto","precio_neto","precio neto","precio (€)"]);
+
+    const precio = toNumberPrice(precioRaw);
+
+    const tallas = pick(x, ["tallas","talla","sizes","size"]);
+
+    return { referencia, descripcion, precio, tallas };
+  }).filter(x=>x.referencia);
+
+  ALL = normItems.filter(isRepeatable);
+  ALL.sort((a,b)=> String(a.referencia).localeCompare(String(b.referencia), "es"));
+
+  VIEW = [...ALL];
+  render();
+  $("countPill").textContent = `${VIEW.length} artículos`;
+
+  // Debug rápido en consola (por si quieres comprobar 3 refs)
+  console.log("Ejemplo precios:", ALL.slice(0,5).map(i=>({ref:i.referencia, precio:i.precio})));
+}
