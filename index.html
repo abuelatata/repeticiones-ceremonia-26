@@ -3,186 +3,262 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Abuela Tata · Repeticiones Ceremonia 2026</title>
+  <title>Abuela Tata · Repeticiones Ceremonia 26</title>
+  <meta name="theme-color" content="#0b3b3a" />
 
-  <link rel="icon" href="img/logo.png" />
+  <!-- jsPDF (PDF con miniaturas) -->
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
   <style>
     :root{
       --bg:#f5efe6;
-      --ink:#6e4f3a;
-      --line:#d2c2b0;
-      --card:#ffffffcc;
-      --shadow: 0 10px 30px rgba(0,0,0,.07);
-      --accent:#7aa79a;
-      --danger:#b25b5b;
+      --ink:#553a27;
+      --muted:#7a5b45;
+      --card:#fffaf3;
+      --line:#e8dfd3;
+      --brand:#0b3b3a;
+      --brand2:#2f7a78;
+      --accent:#d5b7a1;
+      --danger:#a13a2e;
+      --shadow: 0 10px 28px rgba(0,0,0,.08);
+      --radius:18px;
     }
+    *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: Georgia, serif;
-      background: var(--bg);
-      background-image: radial-gradient(#e8dfd3 1px, transparent 1px);
+      font-family: Georgia, "Times New Roman", serif;
+      background:var(--bg);
+      background-image: radial-gradient(var(--line) 1px, transparent 1px);
       background-size: 18px 18px;
       color:var(--ink);
     }
-    .wrap{max-width:1100px;margin:auto;padding:28px 16px 130px;}
+    a{color:var(--brand); text-decoration:none}
+    .wrap{max-width:1120px; margin:0 auto; padding:26px 16px 60px}
     header{
-      display:flex;gap:14px;align-items:center;justify-content:space-between;
-      margin:10px 0 18px; flex-wrap:wrap;
+      display:flex; gap:14px; align-items:center; justify-content:space-between;
+      margin:6px 0 18px;
+      flex-wrap:wrap;
     }
-    .brand{display:flex;gap:14px;align-items:center;}
+    .brand{
+      display:flex; gap:12px; align-items:center;
+    }
     .logo{
-      width:58px;height:58px;border-radius:14px;object-fit:cover;
-      background:#fff;border:1px solid var(--line);
-      box-shadow: var(--shadow);
+      width:54px; height:54px; border-radius:14px;
+      background:linear-gradient(135deg,var(--brand),var(--brand2));
+      box-shadow:var(--shadow);
+      display:flex; align-items:center; justify-content:center;
+      color:#fff; font-weight:700;
+      letter-spacing:.5px;
+      user-select:none;
     }
-    h1{margin:0;font-size:20px;line-height:1.2;}
-    .sub{margin:2px 0 0;font-size:13px;opacity:.85}
-
-    .lang{
-      display:flex;gap:8px;align-items:center;
+    h1{margin:0; font-size:20px; letter-spacing:.3px}
+    .sub{margin:2px 0 0; color:var(--muted); font-size:13px}
+    .topActions{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+    .pill{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.65);
+      border-radius:999px;
+      padding:8px 10px;
+      display:flex; gap:8px; align-items:center;
+      box-shadow:0 4px 12px rgba(0,0,0,.06);
+    }
+    .flagBtn{
+      border:0; background:transparent; cursor:pointer;
+      padding:6px 8px; border-radius:999px;
+      font-size:14px;
+    }
+    .flagBtn.active{background:rgba(11,59,58,.12)}
+    .grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:16px;
+      align-items:start;
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns: 1fr}
+    }
+    .card{
       background:var(--card);
       border:1px solid var(--line);
-      padding:8px 10px;border-radius:14px;
-      box-shadow: var(--shadow);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:16px;
     }
-    .flag{
-      border:1px solid var(--line);
+    .card h2{
+      margin:0 0 10px; font-size:16px;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+    }
+    .muted{color:var(--muted); font-size:13px; line-height:1.35}
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .search{
+      width:100%;
+      display:flex; gap:10px; align-items:center;
+      padding:10px 12px;
       background:#fff;
-      border-radius:10px;
-      padding:6px 8px;
-      cursor:pointer;
-      font-size:14px;
-      line-height:1;
+      border:2px solid rgba(11,59,58,.35);
+      border-radius:14px;
+      box-shadow:0 8px 18px rgba(0,0,0,.06);
     }
-    .flag.active{outline:2px solid var(--accent); border-color:transparent;}
-
-    .panel{
-      background:var(--card);
+    .search input{
+      flex:1;
+      border:0; outline:0;
+      font-size:15px;
+      background:transparent;
+      color:var(--ink);
+    }
+    .small{
+      font-size:12px; color:var(--muted);
+    }
+    .btn{
+      border:0; cursor:pointer;
+      padding:10px 12px;
+      border-radius:14px;
+      font-family: inherit;
+      font-size:14px;
+      background:var(--brand);
+      color:#fff;
+      box-shadow:0 10px 22px rgba(11,59,58,.22);
+      display:inline-flex; gap:8px; align-items:center; justify-content:center;
+      transition:transform .05s ease;
+    }
+    .btn:active{transform:translateY(1px)}
+    .btn.secondary{
+      background:#fff;
+      color:var(--brand);
+      border:1px solid rgba(11,59,58,.25);
+      box-shadow:0 10px 22px rgba(0,0,0,.06);
+    }
+    .btn.danger{
+      background:var(--danger);
+      box-shadow:0 10px 22px rgba(161,58,46,.18);
+    }
+    .products{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap:12px;
+    }
+    @media (max-width: 560px){
+      .products{grid-template-columns: 1fr}
+    }
+    .p{
       border:1px solid var(--line);
-      border-radius:20px;
-      box-shadow: var(--shadow);
-      padding:14px;
-      margin:12px 0 16px;
+      border-radius:18px;
+      background:rgba(255,255,255,.65);
+      padding:12px;
+      display:grid;
+      grid-template-columns: 92px 1fr;
+      gap:12px;
+      align-items:start;
     }
-    .panel h2{margin:0 0 10px;font-size:14px;}
-    .panel p{margin:6px 0;font-size:13px;opacity:.92;line-height:1.35}
-    .panel ul{margin:8px 0 0 18px;padding:0;font-size:13px;opacity:.92}
-    .panel li{margin:6px 0}
-
-    .formGrid{display:grid;grid-template-columns: repeat(12, 1fr);gap:10px;}
-    .f{grid-column: span 12;display:flex;flex-direction:column;gap:5px;}
-    @media (min-width:780px){
-      .f.half{grid-column: span 6;}
-      .f.third{grid-column: span 4;}
-      .f.twothird{grid-column: span 8;}
-    }
-    label{font-size:12px;opacity:.9}
-    input, textarea{
-      font-family: Georgia, serif;
-      font-size:14px;
-      padding:10px 10px;
+    .thumb{
+      width:92px; height:92px;
       border-radius:14px;
       border:1px solid var(--line);
       background:#fff;
-      color:var(--ink);
-      outline:none;
+      overflow:hidden;
+      position:relative;
     }
-    textarea{min-height:74px; resize:vertical}
-
-    .topbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:8px 0 16px;}
-    .search{
-      flex:1 1 260px;display:flex;gap:8px;align-items:center;
-      background:var(--card);border:2px solid var(--line);
-      border-radius:16px;padding:10px 12px;box-shadow: var(--shadow);
+    .thumb img{
+      width:100%; height:100%;
+      object-fit:cover;
+      display:block;
     }
-    .search input{
-      width:100%;border:none;outline:none;font-family: Georgia, serif;
-      font-size:14px;background:transparent;color:var(--ink);
-    }
-    .pill{
-      background:var(--card);border:1px solid var(--line);
-      border-radius:16px;padding:10px 12px;box-shadow: var(--shadow);
-      font-size:13px;display:flex;align-items:center;gap:8px;
-    }
-    .btn{
-      border:none; cursor:pointer;border-radius:16px;
-      padding:11px 14px;font-family: Georgia, serif;
-      box-shadow: var(--shadow);background: var(--accent);
-      color:#fff;font-size:14px;
-    }
-    .btn.secondary{background:#fff;color:var(--ink);border:1px solid var(--line);}
-
-    .grid{display:grid;grid-template-columns: repeat(12, 1fr);gap:14px;}
-    .card{
-      grid-column: span 12;background: var(--card);
-      border:1px solid var(--line);border-radius:20px;overflow:hidden;
-      box-shadow: var(--shadow);display:grid;
-      grid-template-columns: 120px 1fr;min-height:120px;
-    }
-    @media (min-width:780px){ .card{grid-column: span 6;} }
-    @media (min-width:1020px){ .card{grid-column: span 4;} }
-
-    .pic{
-      width:120px;height:120px;background:#fff;
-      border-right:1px solid var(--line);
-      display:flex;align-items:center;justify-content:center;
-    }
-    .pic img{width:100%;height:100%;object-fit:cover;display:block}
-    .pic .ph{font-size:12px;opacity:.75;text-align:center;padding:8px;}
-
-    .content{padding:12px 12px 10px;}
-    .titleRow{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
-    .name{font-weight:700;font-size:14px;margin:0 0 4px;}
-    .ref{font-size:12px;opacity:.85;margin:0;}
-    .price{font-size:13px;font-weight:700;white-space:nowrap;}
-
-    .badges-row{display:flex; gap:8px; flex-wrap:wrap;margin-top:8px;margin-bottom:6px;}
     .badge{
-      font-size:12px;padding:5px 9px;border-radius:999px;
-      border:1px solid var(--line);background:rgba(255,255,255,.75);
+      position:absolute;
+      left:6px; top:6px;
+      background:rgba(11,59,58,.92);
+      color:#fff;
+      font-size:11px;
+      padding:4px 7px;
+      border-radius:999px;
+    }
+    .p h3{margin:0; font-size:14px}
+    .p .ref{font-size:12px; color:var(--muted); margin-top:2px}
+    .p .price{margin-top:8px; font-size:13px}
+    .p .price strong{color:var(--brand)}
+    .sizes{
+      margin-top:10px;
+      display:flex; flex-wrap:wrap; gap:8px;
+    }
+    .sz{
+      display:flex; align-items:center; gap:6px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:6px 8px;
+      background:#fff;
+    }
+    .sz .t{font-size:12px; color:var(--muted); min-width:26px; text-align:center}
+    .qtyBtn{
+      width:28px; height:28px;
+      border-radius:999px;
+      border:1px solid rgba(11,59,58,.25);
+      background:#fff;
+      cursor:pointer;
+      color:var(--brand);
+      font-weight:700;
+      line-height:1;
+    }
+    .qty{
+      min-width:18px;
+      text-align:center;
+      font-size:13px;
       color:var(--ink);
     }
-    .badge-color{font-weight:700}
-    .badge-fam{opacity:.9}
-
-    .no-photo-note{
-      margin-top:6px;font-size:12px;color:var(--ink);opacity:.85;
-      padding:6px 8px;border-left:3px solid var(--line);
-      background:rgba(255,255,255,.55);border-radius:10px;display:none;
+    .cartLine{
+      border-top:1px dashed rgba(122,91,69,.35);
+      padding-top:10px; margin-top:10px;
     }
-
-    .sizes{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px;}
-    .sz{
-      display:flex;align-items:center;gap:6px;border:1px solid var(--line);
-      background:#fff;border-radius:14px;padding:6px 8px;font-size:12px;
+    .cartList{
+      display:flex; flex-direction:column; gap:10px;
+      margin-top:10px;
     }
-    .pm{
-      width:26px;height:26px;border-radius:10px;border:1px solid var(--line);
-      background:#fff;cursor:pointer;font-weight:700;color:var(--ink);line-height:1;
+    .cartItem{
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:rgba(255,255,255,.68);
+      padding:10px;
+      display:flex; gap:10px; align-items:flex-start;
     }
-    .qty{min-width:18px;text-align:center;font-weight:700;}
-
-    .cart{
-      position:fixed; left:0;right:0;bottom:0;
-      background:rgba(255,255,255,.88);
-      border-top:1px solid var(--line);
-      backdrop-filter: blur(8px);
-      padding:10px 14px;
+    .cartMini{
+      width:44px; height:44px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      overflow:hidden;
+      background:#fff;
+      flex:0 0 auto;
     }
-    .cartin{
-      max-width:1100px;margin:auto;display:flex;gap:10px;flex-wrap:wrap;
-      align-items:center;justify-content:space-between;
+    .cartMini img{width:100%; height:100%; object-fit:cover; display:block}
+    .cartMeta{flex:1}
+    .cartMeta .line1{display:flex; justify-content:space-between; gap:10px}
+    .cartMeta .line1 strong{font-size:13px}
+    .cartMeta .sizesTxt{margin-top:4px; font-size:12px; color:var(--muted)}
+    .totals{
+      margin-top:10px;
+      padding:10px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.75);
+      display:flex; flex-direction:column; gap:6px;
+      font-size:13px;
     }
-    .sum{font-size:13px;}
-    .sum strong{font-size:14px}
-    .warn{color:var(--danger);font-size:12px;margin-top:4px;}
-    .small{font-size:12px;opacity:.85}
-
+    .totals .k{display:flex; justify-content:space-between; gap:10px}
+    .note{
+      background:rgba(213,183,161,.22);
+      border:1px solid rgba(213,183,161,.55);
+      padding:10px 12px;
+      border-radius:16px;
+      margin-top:10px;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.35;
+    }
     .loading{
-      padding:18px;background:var(--card);border:1px solid var(--line);
-      border-radius:20px;box-shadow: var(--shadow);
+      padding:12px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.75);
+      color:var(--muted);
+      font-size:13px;
     }
   </style>
 </head>
@@ -191,553 +267,901 @@
   <div class="wrap">
     <header>
       <div class="brand">
-        <img class="logo" src="img/logo.png" alt="Abuela Tata" onerror="this.style.display='none'"/>
+        <div class="logo" aria-hidden="true">AT</div>
         <div>
-          <h1 id="t_title">Repeticiones · Ceremonia 2026</h1>
-          <div class="sub" id="t_sub">Pedidos por referencia y tallas · Color visible en cada modelo</div>
+          <h1 id="t_appTitle">Repeticiones · Ceremonia 26</h1>
+          <div class="sub" id="t_appSub">Selecciona modelos y cantidades por talla. Exporta PDF con fotos.</div>
         </div>
       </div>
 
-      <div class="lang" aria-label="Idioma">
-        <button class="flag active" id="btnES" title="Español">🇪🇸</button>
-        <button class="flag" id="btnEN" title="English">🇬🇧</button>
-        <button class="flag" id="btnPT" title="Português">🇵🇹</button>
+      <div class="topActions">
+        <div class="pill" aria-label="Idiomas">
+          <button class="flagBtn active" id="btnES" type="button">🇪🇸 ES</button>
+          <button class="flagBtn" id="btnEN" type="button">🇬🇧 EN</button>
+          <button class="flagBtn" id="btnPT" type="button">🇵🇹 PT</button>
+        </div>
+        <button class="btn secondary" id="btnReload" type="button">↻ <span id="t_reload">Recargar</span></button>
       </div>
     </header>
 
-    <!-- CONDICIONES (VISIBLES) -->
-    <div class="panel">
-      <h2 id="t_condTitle">Condiciones</h2>
-      <ul>
-        <li id="t_cond1">Recargo del <b>+10%</b> por referencia si el pedido de esa referencia es <b>menor de 3 unidades</b>.</li>
-        <li id="t_cond2">Los modelos de familias no repetibles <b>no aparecen</b> en esta app.</li>
-        <li id="t_cond3">Si no existe foto de una referencia, se mostrará “Sin foto” (misma familia, cambia el color).</li>
-      </ul>
-    </div>
+    <div class="grid">
+      <!-- LISTADO -->
+      <section class="card">
+        <h2>
+          <span id="t_catalog">Catálogo</span>
+          <span class="small" id="t_count"></span>
+        </h2>
 
-    <!-- DATOS CLIENTE (COMPLETO) -->
-    <div class="panel">
-      <h2 id="t_clientTitle">Datos del cliente</h2>
-      <div class="formGrid">
-        <div class="f half"><label id="l_store">Nombre / Tienda</label><input id="c_store" placeholder="Ej: Boutique Pepita"></div>
-        <div class="f half"><label id="l_contact">Persona de contacto</label><input id="c_contact" placeholder="Ej: María"></div>
+        <div class="search">
+          <span aria-hidden="true">🔎</span>
+          <input id="q" type="search" placeholder="Buscar por referencia o nombre…" autocomplete="off" />
+          <button class="btn secondary" id="btnClear" type="button">✕</button>
+        </div>
 
-        <div class="f third"><label id="l_postal">Código Postal</label><input id="c_postal" placeholder="Ej: 41001"></div>
-        <div class="f third"><label id="l_city">Ciudad</label><input id="c_city" placeholder="Ej: Sevilla"></div>
-        <div class="f third"><label id="l_country">País</label><input id="c_country" value="España"></div>
+        <div class="note" id="obsBox" style="display:none"></div>
 
-        <div class="f third"><label id="l_phone">Teléfono</label><input id="c_phone" placeholder="+34 ..."></div>
-        <div class="f third"><label id="l_email">Email</label><input id="c_email" placeholder="cliente@..."></div>
-        <div class="f third"><label id="l_rep">Representante</label><input id="c_rep" placeholder="Ej: David / Moisés / ..."></div>
+        <div style="height:12px"></div>
+        <div id="list" class="products"></div>
 
-        <div class="f twothird"><label id="l_address">Dirección</label><input id="c_address" placeholder="Calle, número, etc."></div>
-        <div class="f third"><label id="l_vat">CIF / VAT</label><input id="c_vat" placeholder="Ej: B12345678"></div>
+        <div id="loading" class="loading" style="display:none; margin-top:12px"></div>
+      </section>
 
-        <div class="f"><label id="l_notes">Notas del pedido</label><textarea id="c_notes" placeholder="Ej: misma familia, cambiar color/lazada/volantes..."></textarea></div>
-      </div>
-    </div>
+      <!-- CARRITO / ACCIONES -->
+      <aside class="card">
+        <h2>
+          <span id="t_order">Pedido</span>
+          <span class="small" id="t_items">0</span>
+        </h2>
 
-    <div class="topbar">
-      <div class="search">
-        <span>🔎</span>
-        <input id="q" type="search" placeholder="Buscar por referencia, descripción, familia o color…" />
-      </div>
+        <div class="row">
+          <button class="btn" id="btnPdfThumbs" type="button">🧾 <span id="t_pdfPhotos">PDF con fotos</span></button>
+          <button class="btn secondary" id="btnPdf" type="button">📄 <span id="t_pdf">PDF</span></button>
+          <button class="btn secondary" id="btnEmail" type="button">✉️ <span id="t_email">Email</span></button>
+          <button class="btn danger" id="btnReset" type="button">🧹 <span id="t_reset">Vaciar</span></button>
+        </div>
 
-      <div class="pill">
-        <span>📦</span>
-        <span id="t_loaded">Cargando tarifa…</span>
-      </div>
+        <div class="cartLine"></div>
+        <div id="cart" class="cartList"></div>
 
-      <button class="btn secondary" id="btnClear">Vaciar</button>
-      <button class="btn" id="btnPDF">PDF + Email</button>
-    </div>
+        <div class="totals" id="totalsBox" style="display:none"></div>
 
-    <div id="status" class="loading">Cargando datos…</div>
-    <div id="grid" class="grid" style="display:none;"></div>
-  </div>
-
-  <div class="cart">
-    <div class="cartin">
-      <div class="sum">
-        <div><strong id="cartUnits">0</strong> <span id="t_units">unidades</span> · <strong id="cartTotal">0,00 €</strong></div>
-        <div class="warn" id="cartSurcharge" style="display:none;"></div>
-      </div>
-      <div class="small" id="t_hint">Recargo +10% por referencia si pides menos de 3 uds.</div>
+        <section class="card" style="margin-top:14px">
+          <h2 id="t_legalTitle">Observaciones · Repeticiones y formas de pago</h2>
+          <div class="muted" id="legalContent"></div>
+        </section>
+      </aside>
     </div>
   </div>
 
 <script>
-/* =========================
-   NO REPETIBLES (NO APARECEN)
-========================= */
-const familiasNoRepetibles = new Set(["404","407","410","411","412","413","414"]);
+/* ==========================
+   CONFIG
+========================== */
+// Ajusta si tu JSON está en otra ruta
+const TARIFA_URL = "data/tarifa.json";
 
-/* =========================
-   IDIOMAS
-========================= */
+// Ajusta si tus imágenes están en otra carpeta o extensión
+// Si en el JSON ya viene "img", se usa directamente.
+const IMG_BASE = "img/";
+const IMG_EXTS = [".jpg",".jpeg",".png",".webp"];
+
+const FAMILIAS_NO_REPETIBLES = new Set(["404","407","410","411","412","413","414"]);
+
+// Reglas de tallas (si tu JSON trae tallas por artículo, se respeta eso)
+const SIZE_RULES = [
+  { starts:["11"], sizes:["3M","6M","9M","12M","18M","2Y"] },
+  { starts:["12","13","30","31"], sizes:["3M","6M","9M","18M","2Y","3Y","4Y"] },
+  { starts:["25","22","43"], sizes:["12M","18M","2Y","3Y","4Y","5Y","6Y","8Y","10Y","12Y"] },
+  { starts:["08"], sizes:["U"] },
+];
+
+// Recargo (si menos de 3 unidades por referencia)
+const SURCHARGE_PCT = 10;
+const SURCHARGE_MIN_QTY = 3;
+
+const EMAIL_TO = "info@abuelatata.com";
+
+/* ==========================
+   I18N
+========================== */
 const I18N = {
-  es:{
-    title:"Repeticiones · Ceremonia 2026",
-    sub:"Pedidos por referencia y tallas · Color visible en cada modelo",
-    condTitle:"Condiciones",
-    cond1:"Recargo del +10% por referencia si el pedido de esa referencia es menor de 3 unidades.",
-    cond2:"Los modelos de familias no repetibles no aparecen en esta app.",
-    cond3:"Si no existe foto de una referencia, se mostrará “Sin foto” (misma familia, cambia el color).",
-    clientTitle:"Datos del cliente",
-    loaded:n=>`Tarifa cargada: ${n} modelos`,
-    searchPH:"Buscar por referencia, descripción, familia o color…",
-    units:"unidades",
-    hint:"Recargo +10% por referencia si pides menos de 3 uds.",
-    noPhoto:"Sin foto · misma familia, cambia el color",
-    fam:"Fam.",
-    color:"Color",
-    pdfSubject:"Pedido Repeticiones Ceremonia 2026",
-    noOrder:"No hay pedido aún.",
-    surchargeApplied:"Recargo aplicado en:"
+  es: {
+    appTitle:"Repeticiones · Ceremonia 26",
+    appSub:"Selecciona modelos y cantidades por talla. Exporta PDF con fotos.",
+    reload:"Recargar",
+    catalog:"Catálogo",
+    searchPH:"Buscar por referencia o nombre…",
+    order:"Pedido",
+    pdfPhotos:"PDF con fotos",
+    pdf:"PDF",
+    email:"Email",
+    reset:"Vaciar",
+    legalTitle:"Observaciones · Repeticiones y formas de pago",
+    noProducts:"No hay productos para mostrar.",
+    loading:"Cargando tarifa…",
+    loadErr:"No se pudo cargar la tarifa. Revisa que exista data/tarifa.json",
+    chosen:"seleccionados",
+    items:"líneas",
+    totals_sub:"Subtotal",
+    totals_surcharge:"Recargo (menos de 3 uds)",
+    totals_total:"Total",
+    obsFallback:
+      `<p><strong>Repeticiones:</strong> Por la alta demanda, rogamos enviar repeticiones lo antes posible. Si alguna talla no está clara, podéis indicarlo sin problema para previsión de tejidos y fornituras.</p>
+       <p><strong>Formas de pago:</strong> Según condiciones pactadas con cada cliente (transferencia / recibo domiciliado si procede).</p>`
   },
-  en:{
-    title:"Reorders · Ceremony 2026",
-    sub:"Orders by reference & sizes · Color visible on each item",
-    condTitle:"Conditions",
-    cond1:"+10% surcharge per reference if that reference is ordered in less than 3 units.",
-    cond2:"Non-repeatable families do not appear in this app.",
-    cond3:"If there is no photo for a reference, it will show “No photo” (same family, color change).",
-    clientTitle:"Customer details",
-    loaded:n=>`Price list loaded: ${n} styles`,
-    searchPH:"Search by reference, description, family or color…",
-    units:"units",
-    hint:"+10% surcharge per reference if you order less than 3 units.",
-    noPhoto:"No photo · same family, color changes",
-    fam:"Fam.",
-    color:"Color",
-    pdfSubject:"Reorders Order · Ceremony 2026",
-    noOrder:"No order yet.",
-    surchargeApplied:"Surcharge applied to:"
+  en: {
+    appTitle:"Reorders · Ceremony 26",
+    appSub:"Select styles and quantities by size. Export PDF with photos.",
+    reload:"Reload",
+    catalog:"Catalogue",
+    searchPH:"Search by reference or name…",
+    order:"Order",
+    pdfPhotos:"PDF with photos",
+    pdf:"PDF",
+    email:"Email",
+    reset:"Clear",
+    legalTitle:"Notes · Reorders and payment methods",
+    noProducts:"No products to display.",
+    loading:"Loading price list…",
+    loadErr:"Could not load the price list. Check data/tarifa.json",
+    chosen:"selected",
+    items:"lines",
+    totals_sub:"Subtotal",
+    totals_surcharge:"Surcharge (under 3 pcs)",
+    totals_total:"Total",
+    obsFallback:
+      `<p><strong>Reorders:</strong> Due to high demand, please send reorders as soon as possible. If any size is not certain, you may indicate it and we will confirm to plan fabrics and trims.</p>
+       <p><strong>Payment methods:</strong> As per the agreed customer terms (bank transfer / direct debit if applicable).</p>`
   },
-  pt:{
-    title:"Reposições · Cerimónia 2026",
-    sub:"Pedidos por referência e tamanhos · Cor visível em cada modelo",
-    condTitle:"Condições",
-    cond1:"+10% de acréscimo por referência se essa referência for pedida em menos de 3 unidades.",
-    cond2:"Famílias não repetíveis não aparecem nesta app.",
-    cond3:"Se não houver foto de uma referência, aparecerá “Sem foto” (mesma família, muda a cor).",
-    clientTitle:"Dados do cliente",
-    loaded:n=>`Tabela carregada: ${n} modelos`,
-    searchPH:"Pesquisar por referência, descrição, família ou cor…",
-    units:"unidades",
-    hint:"+10% de acréscimo por referência se pedir menos de 3 unidades.",
-    noPhoto:"Sem foto · mesmo modelo/família, muda a cor",
-    fam:"Fam.",
-    color:"Cor",
-    pdfSubject:"Pedido Reposições · Cerimónia 2026",
-    noOrder:"Ainda não há pedido.",
-    surchargeApplied:"Acréscimo aplicado em:"
+  pt: {
+    appTitle:"Repetições · Cerimónia 26",
+    appSub:"Escolhe modelos e quantidades por tamanho. Exporta PDF com fotos.",
+    reload:"Recarregar",
+    catalog:"Catálogo",
+    searchPH:"Pesquisar por referência ou nome…",
+    order:"Pedido",
+    pdfPhotos:"PDF com fotos",
+    pdf:"PDF",
+    email:"Email",
+    reset:"Limpar",
+    legalTitle:"Observações · Repetições e formas de pagamento",
+    noProducts:"Sem produtos para mostrar.",
+    loading:"A carregar tabela…",
+    loadErr:"Não foi possível carregar a tabela. Verifica data/tarifa.json",
+    chosen:"selecionados",
+    items:"linhas",
+    totals_sub:"Subtotal",
+    totals_surcharge:"Acréscimo (menos de 3 unid.)",
+    totals_total:"Total",
+    obsFallback:
+      `<p><strong>Repetições:</strong> Devido à elevada procura, pedimos que enviem as repetições o quanto antes. Se algum tamanho não estiver claro, podem indicar e confirmamos para planeamento de tecidos e aviamentos.</p>
+       <p><strong>Formas de pagamento:</strong> Conforme condições acordadas com cada cliente (transferência / débito direto se aplicável).</p>`
   }
 };
 
-let idiomaActual="es";
-function setLang(lang){
-  idiomaActual=lang;
-  document.getElementById("btnES").classList.toggle("active", lang==="es");
-  document.getElementById("btnEN").classList.toggle("active", lang==="en");
-  document.getElementById("btnPT").classList.toggle("active", lang==="pt");
+let lang = (localStorage.getItem("lang") || "es").toLowerCase();
+if(!I18N[lang]) lang = "es";
 
-  document.getElementById("t_title").textContent = I18N[lang].title;
-  document.getElementById("t_sub").textContent = I18N[lang].sub;
+/* ==========================
+   STATE
+========================== */
+let tarifaData = null;
+let items = [];     // catálogo normalizado
+let filtered = [];  // filtrado
+let cart = {};      // { ref: { ref,nombre,precio,img, sizes:{size:qty} } }
 
-  document.getElementById("t_condTitle").textContent = I18N[lang].condTitle;
-  document.getElementById("t_cond1").innerHTML = I18N[lang].cond1.replace("+10%","<b>+10%</b>").replace("3","<b>3</b>");
-  document.getElementById("t_cond2").textContent = I18N[lang].cond2;
-  document.getElementById("t_cond3").textContent = I18N[lang].cond3;
+/* ==========================
+   HELPERS
+========================== */
+const $ = (id)=>document.getElementById(id);
 
-  document.getElementById("t_clientTitle").textContent = I18N[lang].clientTitle;
-  document.getElementById("q").placeholder = I18N[lang].searchPH;
-
-  document.getElementById("t_units").textContent = I18N[lang].units;
-  document.getElementById("t_hint").textContent = I18N[lang].hint;
-
-  render(); renderCart();
+function familyOfRef(ref){
+  const s = String(ref||"").trim();
+  return s.slice(-3);
 }
-document.getElementById("btnES").onclick=()=>setLang("es");
-document.getElementById("btnEN").onclick=()=>setLang("en");
-document.getElementById("btnPT").onclick=()=>setLang("pt");
 
-/* =========================
-   COLORES (incluye 24 MENTA)
-========================= */
-const mapaColores = {
-  "00": { es:"Blanco", en:"White", pt:"Branco" },
-  "01": { es:"Rosa", en:"Pink", pt:"Rosa" },
-  "04": { es:"Celeste", en:"Sky Blue", pt:"Azul Céu" },
-  "05": { es:"Beige", en:"Beige", pt:"Bege" },
-  "06": { es:"Arena", en:"Sand", pt:"Areia" },
-  "09": { es:"Verde", en:"Green", pt:"Verde" },
-  "17": { es:"Azul", en:"Blue", pt:"Azul" },
-  "24": { es:"Menta", en:"Mint", pt:"Menta" },
-  "25": { es:"Maquillaje", en:"Blush", pt:"Blush" }
-};
+function typeOfRef(ref){
+  const s = String(ref||"").trim();
+  return s.slice(0,2);
+}
 
-function parseRef(ref){
-  const r=String(ref).trim();
-  if(!/^\d{7,8}$/.test(r)) return null;
-  if(r.length===7){
-    return { tipo:r.slice(0,2), variante:"", color:r.slice(2,4), familia:r.slice(4,7), raw:r };
+function sizesForRef(ref){
+  const t = typeOfRef(ref);
+  for(const r of SIZE_RULES){
+    if(r.starts.includes(t)) return r.sizes.slice();
   }
-  return { tipo:r.slice(0,2), variante:r.slice(2,3), color:r.slice(3,5), familia:r.slice(5,8), raw:r };
-}
-function getFamilia(ref){ const p=parseRef(ref); return p?p.familia:""; }
-function getTipo(ref){ const p=parseRef(ref); return p?p.tipo:String(ref).slice(0,2); }
-function getColorNombre(ref){
-  const p=parseRef(ref); if(!p) return "";
-  const c=mapaColores[p.color];
-  if(!c){
-    return (idiomaActual==="es") ? `${p.color} (sin definir)` :
-           (idiomaActual==="en") ? `${p.color} (undefined)` :
-           `${p.color} (não definido)`;
-  }
-  return c[idiomaActual] || c.es;
+  // fallback (si no matchea nada)
+  return ["6","7","8","9","10","11","12","13","14","15","16"];
 }
 
-/* =========================
-   TALLAS CORRECTAS POR TIPO
-   (lo que tú definiste)
-========================= */
-const tallasPorTipo = {
-  // 11: pelele (de 3M a 2A)
-  "11": ["3M","6M","9M","12M","18M","2A"],
-
-  // 12/13/30/31: 3M,6M,9M,18M,2A,3A,4A
-  "12": ["3M","6M","9M","18M","2A","3A","4A"],
-  "13": ["3M","6M","9M","18M","2A","3A","4A"],
-  "30": ["3M","6M","9M","18M","2A","3A","4A"],
-  "31": ["3M","6M","9M","18M","2A","3A","4A"],
-
-  // 25/22/43: 12M,18M,2A,3A,4A,5A,6A,8A,10A,12A
-  "25": ["12M","18M","2A","3A","4A","5A","6A","8A","10A","12A"],
-  "22": ["12M","18M","2A","3A","4A","5A","6A","8A","10A","12A"],
-  "43": ["12M","18M","2A","3A","4A","5A","6A","8A","10A","12A"],
-
-  // 08: talla única
-  "08": ["U"]
-};
-
-function getTallas(ref){
-  const t = getTipo(ref);
-  return tallasPorTipo[t] || ["6A","7A","8A","9A","10A","11A","12A","13A","14A","15A","16A"];
+function fmtEur(n){
+  const v = Number(n||0);
+  return v.toLocaleString(lang==="en" ? "en-GB" : (lang==="pt" ? "pt-PT" : "es-ES"), { minimumFractionDigits:2, maximumFractionDigits:2 });
 }
 
-/* =========================
-   DATOS + CARRITO
-========================= */
-let productos=[];
-let filtro="";
-const cart={};
-
-function escapeHTML(s){return String(s||"").replace(/[&<>"']/g,m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));}
-function normalize(s){return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");}
-function formatEUR(n){return Number(n||0).toLocaleString("es-ES",{style:"currency",currency:"EUR"});}
-function getUnitsByRef(ref){
-  const it=cart[ref]; if(!it) return 0;
-  return Object.values(it.tallas).reduce((a,b)=>a+b,0);
-}
-function normalizeProduct(raw){
-  const ref = raw.ref ?? raw.referencia ?? raw.Referencia ?? raw.REF ?? raw.codigo ?? raw.code;
-  const descripcion = raw.descripcion ?? raw.descripción ?? raw.Descripcion ?? raw.Description ?? raw.nombre ?? raw.name ?? "";
-  const precio = raw.precio ?? raw.Precio ?? raw.price ?? raw.PVP ?? 0;
-  if(ref==null) return null;
-  return { ref:String(ref).trim(), descripcion:String(descripcion||"").trim(), precio:Number(precio||0) };
+function setLoading(msg){
+  const el = $("loading");
+  el.style.display = "block";
+  el.textContent = msg;
 }
 
-/* =========================
-   JSON: prueba rutas
-========================= */
-const jsonCandidates=["data/tarifa.json","tarifa.json","data/productos.json","data/data.json"];
-async function fetchFirstJSON(){
-  for(const path of jsonCandidates){
-    try{
-      const r=await fetch(path,{cache:"no-store"});
-      if(!r.ok) continue;
-      return { path, data: await r.json() };
-    }catch(e){}
-  }
-  throw new Error("No encuentro la tarifa (data/tarifa.json).");
+function clearLoading(){
+  $("loading").style.display = "none";
+  $("loading").textContent = "";
 }
 
-/* =========================
-   IMÁGENES: prueba carpetas
-========================= */
-const imgDirs=["img","images","fotos","assets/img","assets/images"];
-const imgExts=["jpg","jpeg","png","webp"];
-function buildImageCandidates(ref){
-  const arr=[];
-  for(const d of imgDirs) for(const e of imgExts) arr.push(`${d}/${ref}.${e}`);
-  return arr;
+function setActiveFlag(){
+  $("btnES").classList.toggle("active", lang==="es");
+  $("btnEN").classList.toggle("active", lang==="en");
+  $("btnPT").classList.toggle("active", lang==="pt");
 }
 
-/* =========================
-   FILTRO (NO REPETIBLES NO APARECEN)
-========================= */
-function matchProduct(p){
-  const ref=String(p.ref);
-  const fam=getFamilia(ref);
-  if(familiasNoRepetibles.has(fam)) return false;
-
-  if(!filtro) return true;
-
-  const col=getColorNombre(ref);
-  const hay=[ref,p.descripcion||"",fam,col].map(normalize).join(" ");
-  return hay.includes(filtro);
-}
-
-/* =========================
-   UI: cantidades
-========================= */
-function setQty(ref,talla,delta){
-  if(!cart[ref]){
-    const p=productos.find(x=>String(x.ref)===String(ref));
-    cart[ref]={ ref:String(ref), descripcion:p?.descripcion||"", precio:Number(p?.precio||0), tallas:{} };
-  }
-  const it=cart[ref];
-  const cur=it.tallas[talla]||0;
-  const next=Math.max(0, cur+delta);
-  if(next===0) delete it.tallas[talla]; else it.tallas[talla]=next;
-  if(Object.keys(it.tallas).length===0) delete cart[ref];
-
-  const el=document.querySelector(`[data-ref="${ref}"][data-size="${talla}"] .qty`);
-  if(el) el.textContent=String(next);
-
+function applyI18N(){
+  const T = I18N[lang];
+  document.documentElement.lang = lang;
+  $("t_appTitle").textContent = T.appTitle;
+  $("t_appSub").textContent = T.appSub;
+  $("t_reload").textContent = T.reload;
+  $("t_catalog").textContent = T.catalog;
+  $("q").placeholder = T.searchPH;
+  $("t_order").textContent = T.order;
+  $("t_pdfPhotos").textContent = T.pdfPhotos;
+  $("t_pdf").textContent = T.pdf;
+  $("t_email").textContent = T.email;
+  $("t_reset").textContent = T.reset;
+  $("t_legalTitle").textContent = T.legalTitle;
+  renderLegalFromTarifa();
+  renderList();
   renderCart();
 }
 
-function render(){
-  if(!productos.length) return;
-  const grid=document.getElementById("grid");
-  grid.innerHTML="";
-
-  productos.filter(matchProduct).forEach(p=>{
-    const ref=String(p.ref);
-    const fam=getFamilia(ref);
-    const colorTxt=getColorNombre(ref);
-
-    const card=document.createElement("div");
-    card.className="card";
-
-    const pic=document.createElement("div");
-    pic.className="pic";
-
-    const img=document.createElement("img");
-    const candidates=buildImageCandidates(ref);
-    let idx=0;
-
-    const content=document.createElement("div");
-    content.className="content";
-
-    function showNoPhoto(){
-      img.remove();
-      pic.innerHTML=`<div class="ph">📷<br>${escapeHTML(I18N[idiomaActual].noPhoto)}</div>`;
-      const note=content.querySelector(".no-photo-note");
-      if(note) note.style.display="block";
-    }
-    function tryNext(){
-      if(idx>=candidates.length) return showNoPhoto();
-      img.src=candidates[idx++];
-    }
-    img.onerror=()=>tryNext();
-    tryNext();
-    pic.appendChild(img);
-
-    const price=Number(p.precio||0);
-    content.innerHTML=`
-      <div class="titleRow">
-        <div>
-          <p class="name">${escapeHTML(p.descripcion||"")}</p>
-          <p class="ref">${escapeHTML(ref)}</p>
-          <div class="badges-row">
-            <span class="badge badge-color">${escapeHTML(I18N[idiomaActual].color)}: ${escapeHTML(colorTxt)}</span>
-            <span class="badge badge-fam">${escapeHTML(I18N[idiomaActual].fam)} ${escapeHTML(fam)}</span>
-          </div>
-          <div class="no-photo-note">${escapeHTML(I18N[idiomaActual].noPhoto)}</div>
-        </div>
-        <div class="price">${formatEUR(price)}</div>
-      </div>
-      <div class="sizes" data-sizes="${escapeHTML(ref)}"></div>
-    `;
-
-    const sizesWrap=content.querySelector(`[data-sizes="${ref}"]`);
-    getTallas(ref).forEach(sz=>{
-      const current=cart[ref]?.tallas?.[sz]||0;
-      const chip=document.createElement("div");
-      chip.className="sz";
-      chip.setAttribute("data-ref",ref);
-      chip.setAttribute("data-size",sz);
-      chip.innerHTML=`
-        <b>${escapeHTML(sz)}</b>
-        <button class="pm" type="button">−</button>
-        <span class="qty">${current}</span>
-        <button class="pm" type="button">+</button>
-      `;
-      const btns=chip.querySelectorAll("button.pm");
-      btns[0].onclick=()=>setQty(ref,sz,-1);
-      btns[1].onclick=()=>setQty(ref,sz,+1);
-      sizesWrap.appendChild(chip);
-    });
-
-    card.appendChild(pic);
-    card.appendChild(content);
-    grid.appendChild(card);
-  });
-
-  document.getElementById("status").style.display="none";
-  document.getElementById("grid").style.display="grid";
+function normalizeTarifa(raw){
+  // Acepta estructuras típicas:
+  // - { productos:[...] }
+  // - [...] directamente
+  // - { items:[...] }
+  const arr = Array.isArray(raw) ? raw : (raw?.productos || raw?.items || raw?.data || []);
+  return arr.map((p)=>{
+    const ref = String(p.ref || p.referencia || p.codigo || "").trim();
+    const nombre = String(p.nombre || p.descripcion || p.name || "").trim();
+    const precio = Number(p.precio || p.price || p.pvp || 0) || 0;
+    const img = String(p.img || p.imagen || p.foto || "").trim();
+    const sizes = Array.isArray(p.tallas) ? p.tallas : (p.sizes || null);
+    return { ref, nombre, precio, img, sizes };
+  }).filter(x=>x.ref);
 }
 
-/* =========================
-   RECARGO +10% si <3 uds por ref
-========================= */
-function calcLineTotal(ref){
-  const it=cart[ref];
-  const u=getUnitsByRef(ref);
-  const base=it.precio*u;
-  const surcharge = (u>0 && u<3);
-  return { units:u, base, surcharge, total: surcharge ? base*1.10 : base };
+function resolveImageUrl(item){
+  if(item.img){
+    // si ya es url absoluta o relativa
+    return item.img;
+  }
+  // fallback por ref con extensiones
+  // intentamos jpg primero al render (el onerror irá cambiando)
+  return IMG_BASE + item.ref + IMG_EXTS[0];
+}
+
+function buildImgWithFallback(srcBaseNoExt, exts){
+  // no lo usamos aquí: lo resolvemos con onerror cambiando ext
+}
+
+/* ==========================
+   RENDER: Observaciones/Condiciones desde tarifa
+========================== */
+function renderLegalFromTarifa(){
+  const T = I18N[lang];
+  const el = $("legalContent");
+  if(!el) return;
+
+  // Intentos de lectura:
+  // tarifaData.observaciones[lang] / .observaciones / .condiciones / .notas / .notes
+  const obs =
+    tarifaData?.observaciones?.[lang] ||
+    tarifaData?.observaciones ||
+    tarifaData?.condiciones?.[lang] ||
+    tarifaData?.condiciones ||
+    tarifaData?.notas?.[lang] ||
+    tarifaData?.notas ||
+    tarifaData?.notes?.[lang] ||
+    tarifaData?.notes ||
+    "";
+
+  el.innerHTML = (obs && String(obs).trim()) ? String(obs) : T.obsFallback;
+
+  // Además, mostramos un resumen corto arriba en el listado si existe obs:
+  const obsBox = $("obsBox");
+  if(obsBox){
+    const show = (obs && String(obs).trim());
+    obsBox.style.display = show ? "block" : "none";
+    if(show){
+      obsBox.innerHTML = String(obs);
+    } else {
+      obsBox.innerHTML = "";
+    }
+  }
+}
+
+/* ==========================
+   RENDER: Catálogo
+========================== */
+function renderList(){
+  const T = I18N[lang];
+  const list = $("list");
+  list.innerHTML = "";
+
+  $("t_count").textContent = filtered.length ? `${filtered.length} ${T.chosen}` : "";
+
+  if(!filtered.length){
+    const d = document.createElement("div");
+    d.className = "loading";
+    d.textContent = T.noProducts;
+    list.appendChild(d);
+    return;
+  }
+
+  for(const it of filtered){
+    const card = document.createElement("div");
+    card.className = "p";
+
+    const imgWrap = document.createElement("div");
+    imgWrap.className = "thumb";
+
+    const badge = document.createElement("div");
+    badge.className = "badge";
+    badge.textContent = it.ref;
+    imgWrap.appendChild(badge);
+
+    const img = document.createElement("img");
+    img.loading = "lazy";
+    img.alt = it.nombre || it.ref;
+
+    // fallback de extensiones
+    const base = it.img ? it.img : (IMG_BASE + it.ref);
+    let idx = 0;
+    function setSrc(){
+      img.src = it.img ? it.img : (base + IMG_EXTS[idx]);
+    }
+    img.onerror = () => {
+      if(it.img) return; // si era URL fija, no probamos
+      idx++;
+      if(idx < IMG_EXTS.length) setSrc();
+    };
+    setSrc();
+
+    imgWrap.appendChild(img);
+
+    const meta = document.createElement("div");
+    const h = document.createElement("h3");
+    h.textContent = it.nombre || it.ref;
+    const ref = document.createElement("div");
+    ref.className = "ref";
+    ref.textContent = `Ref: ${it.ref} · Familia: ${familyOfRef(it.ref)}`;
+
+    const price = document.createElement("div");
+    price.className = "price";
+    price.innerHTML = `${lang==="en"?"Price":"Precio"}: <strong>${fmtEur(it.precio)} €</strong>`;
+
+    // tamaños
+    const sizes = it.sizes && Array.isArray(it.sizes) && it.sizes.length ? it.sizes : sizesForRef(it.ref);
+    const sizesBox = document.createElement("div");
+    sizesBox.className = "sizes";
+
+    for(const s of sizes){
+      const pill = document.createElement("div");
+      pill.className = "sz";
+
+      const minus = document.createElement("button");
+      minus.className = "qtyBtn";
+      minus.type = "button";
+      minus.textContent = "–";
+      minus.addEventListener("click", ()=>changeQty(it, s, -1));
+
+      const plus = document.createElement("button");
+      plus.className = "qtyBtn";
+      plus.type = "button";
+      plus.textContent = "+";
+      plus.addEventListener("click", ()=>changeQty(it, s, +1));
+
+      const t = document.createElement("div");
+      t.className = "t";
+      t.textContent = s;
+
+      const q = document.createElement("div");
+      q.className = "qty";
+      q.id = `qty_${it.ref}_${s}`;
+      q.textContent = String(getQty(it.ref, s));
+
+      pill.appendChild(minus);
+      pill.appendChild(t);
+      pill.appendChild(q);
+      pill.appendChild(plus);
+
+      sizesBox.appendChild(pill);
+    }
+
+    meta.appendChild(h);
+    meta.appendChild(ref);
+    meta.appendChild(price);
+    meta.appendChild(sizesBox);
+
+    card.appendChild(imgWrap);
+    card.appendChild(meta);
+    list.appendChild(card);
+  }
+}
+
+/* ==========================
+   CART
+========================== */
+function getQty(ref, size){
+  return cart?.[ref]?.sizes?.[size] ? Number(cart[ref].sizes[size]) : 0;
+}
+
+function changeQty(item, size, delta){
+  const ref = item.ref;
+  if(!cart[ref]){
+    cart[ref] = {
+      ref,
+      nombre:item.nombre,
+      precio:item.precio,
+      img: resolveImageUrl(item),
+      sizes:{}
+    };
+  }
+  const cur = Number(cart[ref].sizes[size] || 0);
+  const next = Math.max(0, cur + delta);
+  if(next === 0){
+    delete cart[ref].sizes[size];
+  } else {
+    cart[ref].sizes[size] = next;
+  }
+  // si se queda vacío, eliminar línea
+  if(Object.keys(cart[ref].sizes).length === 0){
+    delete cart[ref];
+  }
+  // actualizar UI quick
+  const qEl = document.getElementById(`qty_${ref}_${size}`);
+  if(qEl) qEl.textContent = String(next);
+
+  persistCart();
+  renderCart();
+}
+
+function persistCart(){
+  try{
+    localStorage.setItem("cer26_cart", JSON.stringify(cart));
+  }catch(e){}
+}
+
+function loadCart(){
+  try{
+    const s = localStorage.getItem("cer26_cart");
+    if(s) cart = JSON.parse(s) || {};
+  }catch(e){ cart = {}; }
+}
+
+function cartLines(){
+  return Object.values(cart).map(line=>{
+    const sizesPairs = Object.entries(line.sizes || {}).filter(([,q])=>Number(q)>0);
+    const qty = sizesPairs.reduce((a,[,q])=>a+Number(q),0);
+    return {...line, qty, sizesPairs};
+  }).filter(x=>x.qty>0);
+}
+
+function calcTotals(lines){
+  const subtotal = lines.reduce((acc,l)=>acc + (Number(l.precio||0)*Number(l.qty||0)), 0);
+
+  // recargo por referencia si qty < 3
+  const surchargeBase = lines
+    .filter(l => Number(l.qty) > 0 && Number(l.qty) < SURCHARGE_MIN_QTY)
+    .reduce((acc,l)=>acc + (Number(l.precio||0)*Number(l.qty||0)), 0);
+
+  const surcharge = surchargeBase * (SURCHARGE_PCT/100);
+  const total = subtotal + surcharge;
+  return { subtotal, surcharge, total };
 }
 
 function renderCart(){
-  let units=0;
-  let total=0;
-  const surRefs=[];
+  const T = I18N[lang];
+  const box = $("cart");
+  box.innerHTML = "";
 
-  Object.keys(cart).forEach(ref=>{
-    const c=calcLineTotal(ref);
-    units += c.units;
-    total += c.total;
-    if(c.surcharge) surRefs.push(ref);
-  });
+  const lines = cartLines();
+  $("t_items").textContent = `${lines.length} ${T.items}`;
 
-  document.getElementById("cartUnits").textContent=String(units);
-  document.getElementById("cartTotal").textContent=formatEUR(total);
-
-  const w=document.getElementById("cartSurcharge");
-  if(surRefs.length){
-    w.style.display="block";
-    w.textContent = `${I18N[idiomaActual].surchargeApplied} ${surRefs.join(", ")}`;
-  }else{
-    w.style.display="none";
-    w.textContent="";
+  // refresca los numeritos en catálogo (por si cambia de idioma o se recarga)
+  // (sin rerender total salvo si hace falta)
+  for(const l of lines){
+    for(const [s,q] of (l.sizesPairs||[])){
+      const qEl = document.getElementById(`qty_${l.ref}_${s}`);
+      if(qEl) qEl.textContent = String(q);
+    }
   }
+
+  if(!lines.length){
+    $("totalsBox").style.display = "none";
+    return;
+  }
+
+  for(const l of lines){
+    const row = document.createElement("div");
+    row.className = "cartItem";
+
+    const mini = document.createElement("div");
+    mini.className = "cartMini";
+    const im = document.createElement("img");
+    im.alt = l.ref;
+    // mini fallback: si img es "img/REF.jpg" probamos extensiones si falla
+    let src = l.img || (IMG_BASE + l.ref + IMG_EXTS[0]);
+    im.src = src;
+    if(!l.img){
+      let idx = 0;
+      im.onerror = ()=>{
+        idx++;
+        if(idx<IMG_EXTS.length){
+          im.src = IMG_BASE + l.ref + IMG_EXTS[idx];
+        }
+      };
+    }
+    mini.appendChild(im);
+
+    const meta = document.createElement("div");
+    meta.className = "cartMeta";
+
+    const line1 = document.createElement("div");
+    line1.className = "line1";
+    const left = document.createElement("div");
+    left.innerHTML = `<strong>${l.ref}</strong> · ${l.nombre || ""}`;
+    const right = document.createElement("div");
+    right.innerHTML = `<strong>${fmtEur(Number(l.precio)*Number(l.qty))} €</strong>`;
+    line1.appendChild(left);
+    line1.appendChild(right);
+
+    const sizesTxt = document.createElement("div");
+    sizesTxt.className = "sizesTxt";
+    sizesTxt.textContent = (l.sizesPairs||[]).map(([s,q])=>`${s}:${q}`).join("  ");
+
+    meta.appendChild(line1);
+    meta.appendChild(sizesTxt);
+
+    row.appendChild(mini);
+    row.appendChild(meta);
+    box.appendChild(row);
+  }
+
+  const totals = calcTotals(lines);
+  const tb = $("totalsBox");
+  tb.style.display = "flex";
+  tb.innerHTML = `
+    <div class="k"><span>${T.totals_sub}</span><strong>${fmtEur(totals.subtotal)} €</strong></div>
+    <div class="k"><span>${T.totals_surcharge} (${SURCHARGE_PCT}%)</span><strong>${fmtEur(totals.surcharge)} €</strong></div>
+    <div class="k" style="border-top:1px dashed rgba(122,91,69,.35); padding-top:6px">
+      <span>${T.totals_total}</span><strong>${fmtEur(totals.total)} €</strong>
+    </div>
+  `;
 }
 
-/* =========================
-   PDF + Email (simple pero correcto con recargo)
-========================= */
-function getClientData(){
-  return {
-    store:  document.getElementById("c_store").value.trim(),
-    contact:document.getElementById("c_contact").value.trim(),
-    postal: document.getElementById("c_postal").value.trim(),
-    city:   document.getElementById("c_city").value.trim(),
-    country:document.getElementById("c_country").value.trim(),
-    phone:  document.getElementById("c_phone").value.trim(),
-    email:  document.getElementById("c_email").value.trim(),
-    rep:    document.getElementById("c_rep").value.trim(),
-    address:document.getElementById("c_address").value.trim(),
-    vat:    document.getElementById("c_vat").value.trim(),
-    notes:  document.getElementById("c_notes").value.trim()
-  };
+/* ==========================
+   SEARCH
+========================== */
+function applyFilter(){
+  const term = $("q").value.trim().toLowerCase();
+  if(!term){
+    filtered = items.slice();
+  } else {
+    filtered = items.filter(it=>{
+      return (it.ref||"").toLowerCase().includes(term) ||
+             (it.nombre||"").toLowerCase().includes(term) ||
+             familyOfRef(it.ref).includes(term);
+    });
+  }
+  renderList();
 }
 
-document.getElementById("btnPDF").onclick=()=>{
-  if(!Object.keys(cart).length){ alert(I18N[idiomaActual].noOrder); return; }
-
-  const c = getClientData();
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit:"pt", format:"a4" });
-
-  let y=50;
-  doc.setFont("times","bold"); doc.setFontSize(16);
-  doc.text(I18N[idiomaActual].pdfSubject, 40, y); y+=18;
-
-  doc.setFont("times","normal"); doc.setFontSize(11);
-  doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 40, y); y+=16;
-
-  const clientLines = [
-    `Cliente: ${c.store||"-"} · Contacto: ${c.contact||"-"}`,
-    `CP: ${c.postal||"-"} · Ciudad: ${c.city||"-"} · País: ${c.country||"-"}`,
-    `Email: ${c.email||"-"} · Tel: ${c.phone||"-"} · Rep: ${c.rep||"-"}`,
-    `Dirección: ${c.address||"-"}`,
-    `CIF/VAT: ${c.vat||"-"}`,
-    `Notas: ${c.notes||"-"}`
-  ];
-
-  clientLines.forEach(line=>{
-    if(y>770){ doc.addPage(); y=50; }
-    doc.text(line, 40, y); y+=14;
-  });
-  y+=8;
-
-  let grand=0;
-  const emailLines=[];
-
-  Object.keys(cart).forEach(ref=>{
-    const it=cart[ref];
-    const fam=getFamilia(ref);
-    const col=getColorNombre(ref);
-    const tallaStr=Object.keys(it.tallas).sort().map(t=>`${t}:${it.tallas[t]}`).join(" | ");
-    const cc=calcLineTotal(ref);
-    grand += cc.total;
-
-    const line = `${ref} — ${it.descripcion} — ${col} — Fam ${fam} — ${tallaStr} — Uds:${cc.units} — ${formatEUR(cc.total)}${cc.surcharge ? " (+10%)" : ""}`;
-    emailLines.push(line);
-
-    if(y>770){ doc.addPage(); y=50; }
-    doc.setFont("times","bold"); doc.text(ref, 40, y); y+=14;
-    doc.setFont("times","normal");
-    doc.text(`${it.descripcion} · ${col} · Fam ${fam}`, 40, y); y+=14;
-    doc.text(`Tallas: ${tallaStr}`, 40, y); y+=14;
-    doc.text(`Total línea: ${formatEUR(cc.total)}${cc.surcharge ? " (recargo +10%)" : ""}`, 40, y); y+=18;
-  });
-
-  if(y>770){ doc.addPage(); y=50; }
-  doc.setFont("times","bold"); doc.setFontSize(13);
-  doc.text(`TOTAL: ${formatEUR(grand)}`, 40, y);
-
-  doc.save("pedido-ceremonia-2026.pdf");
-
-  window.location.href =
-    `mailto:?subject=${encodeURIComponent(I18N[idiomaActual].pdfSubject)}&body=${encodeURIComponent(
-      clientLines.join("\n") + "\n\nPEDIDO:\n" + emailLines.join("\n") + "\n\nTOTAL: " + formatEUR(grand)
-    )}`;
-};
-
-/* =========================
-   BOTONES
-========================= */
-document.getElementById("btnClear").onclick=()=>{
-  for(const k of Object.keys(cart)) delete cart[k];
-  render(); renderCart();
-};
-document.getElementById("q").addEventListener("input",(e)=>{filtro=normalize(e.target.value||""); render();});
-
-/* =========================
-   INIT
-========================= */
-(async function init(){
+/* ==========================
+   LOAD DATA
+========================== */
+async function loadTarifa(){
+  const T = I18N[lang];
+  setLoading(T.loading);
   try{
-    const { path, data } = await fetchFirstJSON();
-    let arr = Array.isArray(data) ? data :
-              Array.isArray(data.productos) ? data.productos :
-              Array.isArray(data.items) ? data.items :
-              Array.isArray(data.data) ? data.data : [];
+    const res = await fetch(TARIFA_URL, { cache:"no-store" });
+    if(!res.ok) throw new Error("HTTP "+res.status);
+    const raw = await res.json();
 
-    productos = arr.map(normalizeProduct).filter(Boolean).sort((a,b)=>String(a.ref).localeCompare(String(b.ref)));
+    // Puede venir como objeto con metadata + productos
+    tarifaData = raw;
 
-    document.getElementById("t_loaded").textContent = I18N[idiomaActual].loaded(productos.length) + ` · (${path})`;
+    items = normalizeTarifa(raw);
 
-    render(); renderCart();
-  }catch(err){
-    document.getElementById("status").innerHTML = `<b>Error:</b> ${escapeHTML(err.message)}`;
-    console.error(err);
+    // Aplica regla de familias no repetibles (las ocultamos del catálogo)
+    items = items.filter(it=>{
+      const fam = familyOfRef(it.ref);
+      return !FAMILIAS_NO_REPETIBLES.has(fam);
+    });
+
+    // Si el artículo trae tallas como string (ej "6,7,8"), lo pasamos a array
+    items = items.map(it=>{
+      if(typeof it.sizes === "string"){
+        const arr = it.sizes.split(",").map(x=>x.trim()).filter(Boolean);
+        return {...it, sizes:arr};
+      }
+      return it;
+    });
+
+    filtered = items.slice();
+    renderLegalFromTarifa();
+    applyFilter();
+    clearLoading();
+  }catch(e){
+    console.error(e);
+    setLoading(T.loadErr);
   }
+}
+
+/* ==========================
+   PDF (sin fotos)
+========================== */
+function exportPdfSimple(){
+  const { jsPDF } = window.jspdf || {};
+  if(!jsPDF){ alert("Falta jsPDF"); return; }
+
+  const lines = cartLines();
+  if(!lines.length){ return alert(lang==="en"?"No items selected.":"No hay nada seleccionado."); }
+
+  const doc = new jsPDF({ unit:"mm", format:"a4" });
+  const pageW = doc.internal.pageSize.getWidth();
+  const pageH = doc.internal.pageSize.getHeight();
+
+  let y = 14;
+  doc.setFont("helvetica","bold");
+  doc.setFontSize(14);
+  doc.text("Abuela Tata · Repeticiones Ceremonia 26", 14, y);
+  y += 8;
+
+  doc.setFont("helvetica","normal");
+  doc.setFontSize(10);
+  doc.text(`Fecha: ${new Date().toISOString().slice(0,10)}`, 14, y);
+  y += 8;
+
+  doc.setFontSize(10);
+  for(const l of lines){
+    if(y > pageH - 20){ doc.addPage(); y = 14; }
+    doc.setFont("helvetica","bold");
+    doc.text(`Ref: ${l.ref}`, 14, y);
+    doc.setFont("helvetica","normal");
+    doc.text(`${l.nombre || ""}`, 48, y);
+    y += 6;
+    doc.setFontSize(9);
+    doc.text(`Tallas: ${(l.sizesPairs||[]).map(([s,q])=>`${s}:${q}`).join("  ")}`, 14, y);
+    y += 6;
+    doc.setFontSize(9);
+    doc.text(`Precio: ${fmtEur(l.precio)} €   ·   Uds: ${l.qty}   ·   Línea: ${fmtEur(Number(l.precio)*Number(l.qty))} €`, 14, y);
+    y += 8;
+  }
+
+  const totals = calcTotals(lines);
+  doc.setFont("helvetica","bold");
+  doc.setFontSize(11);
+  doc.text(`Total: ${fmtEur(totals.total)} €`, 14, y);
+
+  doc.save(`AbuelaTata_repeticiones_${new Date().toISOString().slice(0,10)}.pdf`);
+}
+
+/* ==========================
+   PDF con miniaturas
+========================== */
+async function imgUrlToDataUrl(url, maxW = 220, maxH = 220) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      let w = img.naturalWidth || img.width;
+      let h = img.naturalHeight || img.height;
+      const ratio = Math.min(maxW / w, maxH / h, 1);
+      w = Math.round(w * ratio);
+      h = Math.round(h * ratio);
+      canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, w, h);
+      try{
+        const dataUrl = canvas.toDataURL("image/jpeg", 0.82);
+        resolve({ dataUrl, w, h });
+      }catch(e){ reject(e); }
+    };
+    img.onerror = () => reject(new Error("No se pudo cargar " + url));
+    img.src = url;
+  });
+}
+
+function bestThumbUrl(line){
+  // Si line.img es una ruta fija, usamos esa
+  if(line.img) return line.img;
+
+  // Si no, probamos con extensiones
+  // OJO: el PDF necesita URL cargable.
+  // Primero intentamos .jpg (y si falla, el loader del canvas rechazará: hacemos fallback aquí)
+  return IMG_BASE + line.ref + IMG_EXTS[0];
+}
+
+async function exportPdfWithThumbs(){
+  const { jsPDF } = window.jspdf || {};
+  if(!jsPDF){ alert("Falta jsPDF"); return; }
+
+  const lines = cartLines();
+  if(!lines.length){ return alert(lang==="en"?"No items selected.":"No hay nada seleccionado."); }
+
+  const doc = new jsPDF({ unit:"mm", format:"a4" });
+  const pageW = doc.internal.pageSize.getWidth();
+  const pageH = doc.internal.pageSize.getHeight();
+  const margin = 14;
+  const rowH = 28;
+  const thumbBox = 22;
+
+  let y = 14;
+
+  doc.setFont("helvetica","bold");
+  doc.setFontSize(14);
+  doc.text("Abuela Tata · Repeticiones Ceremonia 26", margin, y);
+  y += 7;
+
+  doc.setFont("helvetica","normal");
+  doc.setFontSize(10);
+  doc.text(`Fecha: ${new Date().toISOString().slice(0,10)}`, margin, y);
+  y += 8;
+
+  for(const l of lines){
+    if(y + rowH > pageH - 14){
+      doc.addPage();
+      y = 14;
+    }
+
+    doc.setDrawColor(200);
+    doc.rect(margin, y, pageW - margin*2, rowH);
+
+    const imgX = margin + 2;
+    const imgY = y + 3;
+
+    // Placeholder
+    doc.setFontSize(8);
+    doc.rect(imgX, imgY, thumbBox, thumbBox);
+
+    // Intento miniatura con fallback de extensiones si es imagen por ref
+    let drew = false;
+    let url = bestThumbUrl(l);
+
+    if(!l.img){
+      // probar varias extensiones
+      for(let i=0;i<IMG_EXTS.length;i++){
+        try{
+          url = IMG_BASE + l.ref + IMG_EXTS[i];
+          const { dataUrl } = await imgUrlToDataUrl(url, 220, 220);
+          doc.addImage(dataUrl, "JPEG", imgX, imgY, thumbBox, thumbBox);
+          drew = true;
+          break;
+        }catch(e){
+          // sigue probando
+        }
+      }
+    } else {
+      try{
+        const { dataUrl } = await imgUrlToDataUrl(url, 220, 220);
+        doc.addImage(dataUrl, "JPEG", imgX, imgY, thumbBox, thumbBox);
+        drew = true;
+      }catch(e){
+        drew = false;
+      }
+    }
+
+    if(!drew){
+      doc.text("Sin foto", imgX + 3, imgY + 12);
+    }
+
+    const textX = imgX + thumbBox + 4;
+    let ty = y + 7;
+
+    doc.setFont("helvetica","bold");
+    doc.setFontSize(10);
+    doc.text(`Ref: ${l.ref}  ·  Familia: ${familyOfRef(l.ref)}`, textX, ty);
+
+    doc.setFont("helvetica","normal");
+    doc.setFontSize(9);
+    ty += 5;
+    doc.text((l.nombre || "").slice(0,70), textX, ty);
+
+    ty += 5;
+    doc.text(`Tallas: ${(l.sizesPairs||[]).map(([s,q])=>`${s}:${q}`).join("  ") || "—"}`, textX, ty);
+
+    ty += 5;
+    doc.text(`Precio: ${fmtEur(l.precio)} €  ·  Uds: ${l.qty}  ·  Línea: ${fmtEur(Number(l.precio)*Number(l.qty))} €`, textX, ty);
+
+    y += rowH + 4;
+  }
+
+  const totals = calcTotals(lines);
+  if(y > pageH - 18){ doc.addPage(); y = 14; }
+  doc.setFont("helvetica","bold");
+  doc.setFontSize(12);
+  doc.text(`TOTAL: ${fmtEur(totals.total)} €`, margin, y);
+
+  doc.save(`AbuelaTata_repeticiones_con_fotos_${new Date().toISOString().slice(0,10)}.pdf`);
+}
+
+/* ==========================
+   EMAIL
+========================== */
+function buildEmailBody(lines){
+  const totals = calcTotals(lines);
+  const legal = ($("legalContent")?.innerText || "").trim();
+  const header = `Abuela Tata · Repeticiones Ceremonia 26\nFecha: ${new Date().toISOString().slice(0,10)}\n\n`;
+  const itemsTxt = lines.map(l=>{
+    const sizes = (l.sizesPairs||[]).map(([s,q])=>`${s}:${q}`).join("  ");
+    return `Ref: ${l.ref}\n${l.nombre || ""}\nTallas: ${sizes}\nPrecio: ${fmtEur(l.precio)} € · Uds: ${l.qty} · Línea: ${fmtEur(Number(l.precio)*Number(l.qty))} €\n`;
+  }).join("\n");
+
+  const totalsTxt = `\nSubtotal: ${fmtEur(totals.subtotal)} €\nRecargo (${SURCHARGE_PCT}% si menos de ${SURCHARGE_MIN_QTY} uds por referencia): ${fmtEur(totals.surcharge)} €\nTOTAL: ${fmtEur(totals.total)} €\n`;
+
+  const legalTxt = legal ? `\n\nOBSERVACIONES:\n${legal}\n` : "";
+
+  return header + itemsTxt + totalsTxt + legalTxt;
+}
+
+function sendEmail(){
+  const lines = cartLines();
+  if(!lines.length){ return alert(lang==="en"?"No items selected.":"No hay nada seleccionado."); }
+  const subject = encodeURIComponent("Repeticiones · Ceremonia 26");
+  const body = encodeURIComponent(buildEmailBody(lines));
+  window.location.href = `mailto:${EMAIL_TO}?subject=${subject}&body=${body}`;
+}
+
+/* ==========================
+   EVENTS
+========================== */
+function setLang(newLang){
+  lang = newLang;
+  localStorage.setItem("lang", lang);
+  setActiveFlag();
+  applyI18N();
+}
+
+$("btnES").addEventListener("click", ()=>setLang("es"));
+$("btnEN").addEventListener("click", ()=>setLang("en"));
+$("btnPT").addEventListener("click", ()=>setLang("pt"));
+
+$("btnReload").addEventListener("click", ()=>{
+  loadTarifa();
+});
+
+$("q").addEventListener("input", applyFilter);
+
+$("btnClear").addEventListener("click", ()=>{
+  $("q").value = "";
+  applyFilter();
+});
+
+$("btnReset").addEventListener("click", ()=>{
+  if(!confirm(lang==="en"?"Clear the order?":"¿Vaciar el pedido?")) return;
+  cart = {};
+  persistCart();
+  renderCart();
+  // reset quantities in list quickly
+  renderList();
+});
+
+$("btnPdf").addEventListener("click", exportPdfSimple);
+$("btnPdfThumbs").addEventListener("click", exportPdfWithThumbs);
+$("btnEmail").addEventListener("click", sendEmail);
+
+/* ==========================
+   INIT
+========================== */
+(function init(){
+  setActiveFlag();
+  applyI18N();
+  loadCart();
+  renderCart();
+  loadTarifa();
 })();
 </script>
 </body>
