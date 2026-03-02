@@ -578,7 +578,10 @@ function normalizeRef(v){
 
 function getType(ref){ return (ref||"").toString().slice(0,2); }
 function getFamily(ref){ return (ref||"").toString().slice(-3); }
-function getSizesForType(type){ return SIZE_SETS[type] || ["TU"]; }
+function getSizesForType(type){
+  const k = String(type || "").trim();
+  return SIZE_MAP[k] || ["U"];
+}
 
 function guessImgForRef(ref){
   const base = IMAGE_BASE + ref;
