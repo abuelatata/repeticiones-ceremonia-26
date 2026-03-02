@@ -1042,42 +1042,72 @@
     doc.setFont("times","bold"); doc.setFontSize(12);
     doc.text("MODELOS PEDIDOS", margin, y); y+=6;
 
+    // ====== PARCHE PDF: columnas más seguras (NO PISAR PRECIO) ======
+    // Layout fijo:
+    // Imagen: x=12..32
+    // Ref/Desc: x=38, ancho 60 (hasta ~98)
+    // Tallas: x=104, ancho 52 (hasta ~156)
+    // Precio: x=176 (align right)
+    // Importe: x=198 (align right)
+    const X_IMG = margin;          // 12
+    const X_REF = margin + 26;     // 38
+    const X_TALLAS = margin + 92;  // 104  (lo mantenemos para no cambiar el layout visual)
+    const W_REF = 60;
+    const W_TALLAS = 52;           // ✅ ANTES 72 -> esto causaba el pisado
+    const X_PRICE = 176;           // ✅ un pelín más a la derecha
+    const X_IMPORTE = 198;
+
     doc.setFontSize(9);
-    doc.text("Imagen", margin, y);
-    doc.text("Ref / Descripción", margin+26, y);
-    doc.text("Tallas", margin+92, y);
-    doc.text("Precio", 168, y, {align:"right"});
-    doc.text("Importe", 198, y, {align:"right"});
+    doc.text("Imagen", X_IMG, y);
+    doc.text("Ref / Descripción", X_REF, y);
+    doc.text("Tallas", X_TALLAS, y);
+    doc.text("Precio", X_PRICE, y, {align:"right"});
+    doc.text("Importe", X_IMPORTE, y, {align:"right"});
     y+=5; doc.setDrawColor(200); doc.line(margin, y, 210-margin, y); y+=5;
     doc.setFont("times","normal");
 
     for(const ln of lines){
-      const rowH=22;
+      // --- Preparar textos con wrapping seguro ---
+      const refDesc = `${ln.ref} · ${ln.desc}`;
+
+      const refLines = doc.splitTextToSize(refDesc, W_REF);
+      const tallaLines = doc.splitTextToSize(ln.tallas||"", W_TALLAS);
+
+      // Altura dinámica (para que si hay muchas tallas no se coma el precio ni la siguiente fila)
+      const maxLines = Math.max(refLines.length, tallaLines.length, 1);
+      const lineH = 4.1;          // altura por línea a fontSize 9 aprox
+      const minRowH = 22;         // mantiene tu estética e imagen 20x20
+      const padTop = 3;
+      const padBottom = 6;
+      const rowH = Math.max(minRowH, padTop + (maxLines * lineH) + padBottom);
+
       if(y + rowH > 287){ doc.addPage(); y=16; }
 
       let imgData=null;
       if(ln.imgUrl) imgData = await urlToDataURL(ln.imgUrl);
 
       if(imgData){
-        try{ doc.addImage(imgData, "JPEG", margin, y-1, 20, 20); }
-        catch(e){ try{ doc.addImage(imgData, "PNG", margin, y-1, 20, 20); }catch(_){ } }
+        try{ doc.addImage(imgData, "JPEG", X_IMG, y-1, 20, 20); }
+        catch(e){ try{ doc.addImage(imgData, "PNG", X_IMG, y-1, 20, 20); }catch(_){ } }
       }else{
-        doc.setDrawColor(210); doc.rect(margin, y-1, 20, 20);
-        doc.setFontSize(7); doc.text("Sin foto", margin+10, y+9, {align:"center"}); doc.setFontSize(9);
+        doc.setDrawColor(210); doc.rect(X_IMG, y-1, 20, 20);
+        doc.setFontSize(7); doc.text("Sin foto", X_IMG+10, y+9, {align:"center"}); doc.setFontSize(9);
       }
 
-      const refDesc = `${ln.ref} · ${ln.desc}`;
-      doc.text(doc.splitTextToSize(refDesc, 62), margin+26, y+3);
-      doc.text(doc.splitTextToSize(ln.tallas||"", 72), margin+92, y+3);
-      doc.text(eur(ln.precio), 168, y+3, {align:"right"});
+      // Textos
+      doc.text(refLines, X_REF, y+3);
+      doc.text(tallaLines, X_TALLAS, y+3);
+
+      // Precio e importe (siempre separados)
+      doc.text(eur(ln.precio), X_PRICE, y+3, {align:"right"});
       doc.setFont("times","bold");
-      doc.text(eur(ln.subtotal), 198, y+3, {align:"right"});
+      doc.text(eur(ln.subtotal), X_IMPORTE, y+3, {align:"right"});
       doc.setFont("times","normal");
 
       if(ln.inc){
         doc.setTextColor(192,57,43);
         doc.setFont("times","bold");
-        doc.text("+10% (1–2 uds)", margin+26, y+18);
+        doc.text("+10% (1–2 uds)", X_REF, y + Math.min(18, rowH - 5));
         doc.setFont("times","normal");
         doc.setTextColor(0,0,0);
       }
