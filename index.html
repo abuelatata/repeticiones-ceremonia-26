@@ -136,6 +136,7 @@
       padding:10px 12px;
       border-radius:14px;
       margin:12px 0;
+      white-space:pre-wrap;
     }
 
     /* Client card */
@@ -461,22 +462,37 @@
 /* =============================
    Config
 ============================= */
-const ORDER_RECEIVER_EMAIL = "info@abuelatata.com"; // destino del pedido
+const ORDER_RECEIVER_EMAIL = "info@abuelatata.com";
 const TARIFA_URL = "data/tarifa.json";
 
-/* Tallas por tipo (2 primeras cifras) */
+/* ✅ Familias NO repetibles (últimas 3 cifras) */
+const FAMILIAS_NO_REPETIBLES = ["404","407","410","411","412","413","414"];
+
+/* =============================
+   Tallas por tipo (2 primeras cifras)
+============================= */
 const SIZES_BY_TYPE = {
-  "08": ["TU"], // accesorios talla única
-  "11": ["3M","6M","9M","12M","18M","2A"], // pelele (según lo que me dijiste)
-  "12": ["3M","6M","9M","18M","2A","3A","4A"], // jesusito con capota
-  "13": ["3M","6M","9M","18M","2A","3A","4A"], // jesusito sin capota
-  "30": ["3M","6M","9M","18M","2A","3A","4A"], // (si aplica)
-  "31": ["3M","6M","9M","18M","2A","3A","4A"], // (si aplica)
-  "22": ["12M","18M","2A","3A","4A","5A","6A","8A","10A","12A"], // abrigos
-  "25": ["12M","18M","2A","3A","4A","5A","6A","8A","10A","12A"], // vestidos vuelo
-  "43": ["12M","18M","2A","3A","4A","5A","6A","8A","10A","12A"]  // (si aplica)
+  "08": ["TU"],
+
+  "11": ["3M","6M","9M","12M","18M","2A"],
+
+  "12": ["3M","6M","9M","18M","2A","3A","4A"],
+  "13": ["3M","6M","9M","18M","2A","3A","4A"],
+
+  "30": ["3M","6M","9M","18M","2A","3A","4A"],
+  "31": ["3M","6M","9M","18M","2A","3A","4A"],
+
+  "22": ["12M","18M","2A","3A","4A","5A","6A","8A","10A","12A"],
+  "25": ["12M","18M","2A","3A","4A","5A","6A","8A","10A","12A"],
+  "43": ["12M","18M","2A","3A","4A","5A","6A","8A","10A","12A"],
+
+  /* ✅ Tipos que aparecen en tarifa y antes no estaban */
+  "03": ["3M","6M","9M","18M","2A","3A","4A"],             // braguita/pantalón niño (según tarifa 3M-4A)
+  "04": ["12M","18M","2A","3A","4A","5A","6A","8A","10A","12A"], // pantalón niño (según tarifa 12M-12A)
+  "44": ["12M","18M","2A","3A","4A","5A","6A","8A","10A","12A"], // camisas
+  "15": ["12M","18M","2A","3A","4A","5A","6A","8A","10A","12A"]  // vestido 15xxxxxx
 };
-/* Default si no está definido */
+
 const DEFAULT_SIZES = ["3M","6M","9M","12M","18M","2A","3A","4A","5A","6A","8A","10A","12A"];
 
 /* Recargo */
@@ -507,13 +523,11 @@ const i18n = {
     clear:"Vaciar",
     pdf:"PDF",
     send:"Enviar pedido",
-    price:"Precio",
     surcharge:"Recargo +10% (menos de 3 uds)",
     noProducts:"No hay productos que coincidan con la búsqueda.",
     missing:"Faltan datos obligatorios: Nombre, CIF/NIF, Email, CP y Localidad.",
     sendingSubject:"Pedido Repeticiones Ceremonia 26",
     mailIntro:"Adjuntamos pedido de repeticiones Ceremonia 26.",
-    okPdf:"PDF generado.",
     loadErr:"No he podido cargar la tarifa. Revisa que exista /data/tarifa.json"
   },
   en:{
@@ -536,13 +550,11 @@ const i18n = {
     clear:"Clear",
     pdf:"PDF",
     send:"Send order",
-    price:"Price",
     surcharge:"Surcharge +10% (less than 3 units)",
     noProducts:"No products match your search.",
     missing:"Missing required fields: Name, VAT/Tax ID, Email, Postcode and City.",
     sendingSubject:"Reorder · Ceremony 26",
     mailIntro:"Please find the Ceremony 26 reorder details below.",
-    okPdf:"PDF generated.",
     loadErr:"Unable to load price list. Check /data/tarifa.json"
   },
   pt:{
@@ -565,13 +577,11 @@ const i18n = {
     clear:"Limpar",
     pdf:"PDF",
     send:"Enviar pedido",
-    price:"Preço",
     surcharge:"Acréscimo +10% (menos de 3 unid.)",
     noProducts:"Nenhum produto corresponde à pesquisa.",
     missing:"Faltam campos obrigatórios: Nome, NIF, Email, CP e Localidade.",
     sendingSubject:"Pedido · Cerimónia 26",
     mailIntro:"Segue abaixo o pedido de reposições Cerimónia 26.",
-    okPdf:"PDF gerado.",
     loadErr:"Não foi possível carregar a tabela. Verifique /data/tarifa.json"
   }
 };
@@ -581,18 +591,26 @@ let LANG = "es";
 /* =============================
    State
 ============================= */
-let ALL = [];          // productos de tarifa
-let VIEW = [];         // filtrados
-let CART = {};         // { ref: { size: qty } }
+let ALL = [];
+let VIEW = [];
+let CART = {};
 
 /* =============================
    Helpers
 ============================= */
-const € = (n) => (n||0).toLocaleString(LANG==="en" ? "en-GB" : (LANG==="pt" ? "pt-PT" : "es-ES"), {minimumFractionDigits:2, maximumFractionDigits:2}) + " €";
+const € = (n) => (n||0).toLocaleString(
+  LANG==="en" ? "en-GB" : (LANG==="pt" ? "pt-PT" : "es-ES"),
+  {minimumFractionDigits:2, maximumFractionDigits:2}
+) + " €";
 
 function getTypeFromRef(ref){
   const r = String(ref ?? "").trim();
   return r.slice(0,2);
+}
+
+function getFamilyFromRef(ref){
+  const r = String(ref ?? "").trim();
+  return r.slice(-3);
 }
 
 function sizesForRef(ref){
@@ -621,7 +639,6 @@ function placeholderDataURL(ref){
   return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
 }
 
-/* ✅ función corregida (trim + rompe caché) */
 function setImageWithFallbacks(imgEl, ref){
   const cleanRef = String(ref ?? "").trim();
   const v = Date.now();
@@ -683,33 +700,56 @@ function modelHasSurcharge(ref){
 }
 
 /* =============================
+   Debug banner
+============================= */
+function showErr(msg){
+  const e = document.getElementById("err");
+  e.style.display = "block";
+  e.textContent = msg;
+}
+function hideErrLater(ms=1800){
+  setTimeout(()=>{ document.getElementById("err").style.display="none"; }, ms);
+}
+
+/* =============================
    Load
 ============================= */
 async function loadTarifa(){
   try{
-    const res = await fetch(TARIFA_URL, { cache: "no-store" });
+    showErr("Cargando tarifa...\n" + TARIFA_URL);
+
+    const res = await fetch(TARIFA_URL, { cache:"no-store" });
+    showErr("Cargando tarifa...\n" + TARIFA_URL + "\nHTTP: " + res.status + " " + res.statusText);
     if(!res.ok) throw new Error("HTTP " + res.status);
 
     const data = await res.json();
     const productos = Array.isArray(data) ? data : (data.productos || data.items || data.tarifa || []);
 
-    // Normalizar campos mínimos
-    ALL = productos
-      .map(p => ({
-        ref: String(p.ref ?? "").trim(),
-        name: String(p.name ?? "").trim(),
-        price: Number(p.price ?? 0)
-      }))
-      .filter(p => p.ref);
+    // ✅ Normalización robusta de claves (ref/nombre/precio)
+    const normalizados = productos.map(p => {
+      const ref = String(p.ref ?? p.referencia ?? p.REF ?? "").trim();
+      const name = String(p.name ?? p.nombre ?? p.descripcion ?? p.DESCRIPCION ?? "").trim();
+      const price = Number(p.price ?? p.precio ?? p.PVP ?? 0);
+      return { ref, name, price };
+    }).filter(p => p.ref);
+
+    // ✅ FILTRO: quitar familias NO repetibles (últimas 3 cifras)
+    ALL = normalizados.filter(p => {
+      const fam = getFamilyFromRef(p.ref);
+      return !FAMILIAS_NO_REPETIBLES.includes(fam);
+    });
 
     VIEW = [...ALL];
+
     render();
     updateStats();
+
+    showErr("OK ✅ Artículos cargados: " + ALL.length);
+    hideErrLater(1600);
+
   }catch(err){
     console.warn(err);
-    const e = document.getElementById("err");
-    e.style.display = "block";
-    e.textContent = i18n[LANG].loadErr + " (" + String(err.message || err) + ")";
+    showErr(i18n[LANG].loadErr + "\n" + TARIFA_URL + "\n" + String(err.message || err));
   }
 }
 
@@ -817,13 +857,11 @@ function render(){
     box.appendChild(card);
   }
 
-  // refrescar cantidades en UI (por si venimos de search)
   refreshQtyUI();
   refreshSurchargeNotes();
 }
 
 function refreshQtyUI(){
-  // Recorremos tarjetas y actualizamos los spans de qty
   const cards = document.querySelectorAll(".pCard");
   cards.forEach((c)=>{
     const refEl = c.querySelector(".pRef");
@@ -1030,7 +1068,6 @@ async function makePDF(){
   doc.line(40, y, W-40, y);
   y += 18;
 
-  // Table header
   doc.setFont("helvetica","bold");
   doc.setFontSize(10);
   doc.text("REF", 40, y);
@@ -1163,7 +1200,6 @@ function setLang(lang){
   document.getElementById("t_pdf").textContent = t.pdf;
   document.getElementById("t_send").textContent = t.send;
 
-  // refresca totales con formato idioma
   updateStats();
 }
 
@@ -1171,7 +1207,6 @@ function setLang(lang){
    Init
 ============================= */
 document.getElementById("q").addEventListener("input", applySearch);
-
 document.getElementById("btn_clear").addEventListener("click", clearAll);
 document.getElementById("btn_pdf").addEventListener("click", makePDF);
 document.getElementById("btn_send").addEventListener("click", sendEmail);
