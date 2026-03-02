@@ -1,98 +1,228 @@
-async function loadData(){
-  let res, json;
-  try{
-    res = await fetch(DATA_URL, {cache:"no-store"});
-    if(!res.ok) throw new Error("HTTP " + res.status);
-    json = await res.json();
-  }catch(e){
-    console.error(e);
-    toast("⚠️ No se ha podido cargar ./data/tarifa.json");
-    $("countPill").textContent = "Error carga JSON";
-    return;
-  }
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Repeticiones Ceremonia 26 · Abuela Tata</title>
 
-  const items = Array.isArray(json) ? json : (json.items || json.articulos || json.data || []);
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
-  // Busca una clave dentro del objeto aunque varíe el nombre: "Precio", "PRECIO ", "pvp", etc.
-  const pick = (obj, aliases) => {
-    if (!obj || typeof obj !== "object") return undefined;
-    const keys = Object.keys(obj);
-    const norm = (s)=>String(s).trim().toLowerCase();
+<style>
+body{
+    margin:0;
+    font-family: Georgia, serif;
+    background:#f5efe6;
+    color:#5b3f2d;
+}
+.container{
+    max-width:1200px;
+    margin:auto;
+    padding:20px;
+}
+h1{
+    text-align:center;
+}
+.card{
+    background:white;
+    padding:15px;
+    margin-bottom:15px;
+    border-radius:12px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+img{
+    max-width:100%;
+    border-radius:10px;
+    cursor:pointer;
+}
+button{
+    padding:8px 12px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    margin:5px 3px;
+}
+.btn-primary{background:#2f7f75;color:white;}
+.btn-danger{background:#c0392b;color:white;}
+.red{color:#c0392b;font-weight:bold;}
+.green{color:#1f7a3b;font-weight:bold;}
+input{
+    padding:6px;
+    margin:4px 0;
+    width:100%;
+}
+.summary{
+    background:#fff;
+    padding:15px;
+    border-radius:12px;
+    margin-top:20px;
+}
+</style>
+</head>
+<body>
 
-    // 1) match directo por alias
-    for (const a of aliases){
-      const hit = keys.find(k => norm(k) === norm(a));
-      if (hit != null) return obj[hit];
+<div class="container">
+<h1>Repeticiones Ceremonia 26</h1>
+
+<div class="card">
+<h3>Datos del Pedido</h3>
+<input id="empresa" placeholder="Tienda / Empresa *">
+<input id="nombre" placeholder="Nombre y apellidos *">
+<input id="cif" placeholder="CIF / NIF *">
+<input id="cp" placeholder="Código Postal *">
+<input id="poblacion" placeholder="Población *">
+<input id="provincia" placeholder="Provincia *">
+<input id="telefono" placeholder="Teléfono *">
+<input id="email" placeholder="Email *">
+<textarea id="obs" placeholder="Observaciones"></textarea>
+
+<button class="btn-primary" onclick="guardarPDF()">GUARDAR PDF</button>
+<button class="btn-primary" onclick="enviarEmail()">ENVIAR EMAIL</button>
+<button class="btn-danger" onclick="vaciar()">VACIAR</button>
+</div>
+
+<div id="productos"></div>
+
+<div class="summary">
+<div id="envio"></div>
+<h3>Total Neto (antes de impuestos): <span id="total">0,00 €</span></h3>
+<p>* Importes NETOS antes de IVA / Recargo.</p>
+</div>
+
+</div>
+
+<script>
+
+const DATA_URL = "./data/tarifa.json";
+const IMAGE_BASE = "./images/";
+const EMAIL_TO = "info@abuelatata.com";
+
+const CONTINUIDAD = ["401","402","403","405","406","408"];
+const NO_REPETIR = ["404","407","409","410","411","412","413","414"];
+
+let productos = [];
+let pedido = {};
+
+function toNumber(p){
+    return Number(String(p).replace(",","."));
+}
+
+async function cargarDatos(){
+    const res = await fetch(DATA_URL);
+    const data = await res.json();
+
+    productos = data.filter(p=>{
+        const fam = String(p.referencia).slice(-3);
+        if(N0_REPETIR.includes(fam)) return false;
+        if(CONTINUIDAD.includes(fam)) return true;
+        return true;
+    });
+
+    render();
+}
+
+function render(){
+    const cont = document.getElementById("productos");
+    cont.innerHTML="";
+
+    productos.forEach(p=>{
+        const div = document.createElement("div");
+        div.className="card";
+
+        const img = document.createElement("img");
+        img.src = IMAGE_BASE + p.referencia + ".jpg";
+        img.onerror = ()=> img.style.display="none";
+        img.onclick = ()=> window.open(img.src);
+
+        div.innerHTML += `<h3>${p.referencia}</h3>`;
+        div.appendChild(img);
+        div.innerHTML += `
+            <p>Precio: ${p.precio} €</p>
+            <input type="number" min="0" placeholder="Cantidad" onchange="actualizar('${p.referencia}', this.value, ${p.precio})">
+            <div id="sub_${p.referencia}">Importe modelo: 0,00 €</div>
+            <div id="inc_${p.referencia}"></div>
+        `;
+        cont.appendChild(div);
+    });
+}
+
+function actualizar(ref, qty, precio){
+    qty = Number(qty);
+    if(qty<=0){ delete pedido[ref]; }
+    else{
+        pedido[ref] = {qty, precio};
     }
 
-    // 2) match por "contiene" (por si viene como "Precio Neto", "Precio (€)", etc.)
-    for (const a of aliases){
-      const hit = keys.find(k => norm(k).includes(norm(a)));
-      if (hit != null) return obj[hit];
+    let subtotal = qty * precio;
+    let incremento = "";
+
+    if(qty===1 || qty===2){
+        subtotal *= 1.10;
+        incremento = "<span class='red'>+10% aplicado</span>";
     }
 
-    return undefined;
-  };
+    document.getElementById("sub_"+ref).innerHTML = "Importe modelo: " + subtotal.toFixed(2) + " €";
+    document.getElementById("inc_"+ref).innerHTML = incremento;
 
-  const normItems = items.map(x=>{
-    const referencia = String(
-      pick(x, ["referencia","ref","reference","codigo","código","sku","id"])
-      ?? ""
-    ).trim();
-
-    const descripcion = String(
-      pick(x, ["descripcion","descripción","desc","description","nombre","name"])
-      ?? ""
-    ).trim();
-
-    const precioRaw =
-      pick(x, ["precio","pvp","price","importe","neto","precio_neto","precio neto","precio (€)"]);
-
-    const precio = toNumberPrice(precioRaw);
-
-    const tallas = pick(x, ["tallas","talla","sizes","size"]);
-
-    return { referencia, descripcion, precio, tallas };
-  }).filter(x=>x.referencia);
-
-  ALL = normItems.filter(isRepeatable);
-  ALL.sort((a,b)=> String(a.referencia).localeCompare(String(b.referencia), "es"));
-
-  VIEW = [...ALL];
-  render();
-  $("countPill").textContent = `${VIEW.length} artículos`;
-
-  // Debug rápido en consola (por si quieres comprobar 3 refs)
-  console.log("Ejemplo precios:", ALL.slice(0,5).map(i=>({ref:i.referencia, precio:i.precio})));
+    calcularTotal();
 }
-  const normItems = items.map(x=>{
-    const referencia = String(
-      pick(x, ["referencia","ref","reference","codigo","código","sku","id"])
-      ?? ""
-    ).trim();
 
-    const descripcion = String(
-      pick(x, ["descripcion","descripción","desc","description","nombre","name"])
-      ?? ""
-    ).trim();
+function calcularTotal(){
+    let total = 0;
+    for(let r in pedido){
+        let q = pedido[r].qty;
+        let p = pedido[r].precio;
+        let sub = q*p;
+        if(q===1||q===2) sub*=1.10;
+        total+=sub;
+    }
 
-    const precioRaw =
-      pick(x, ["precio","pvp","price","importe","neto","precio_neto","precio neto","precio (€)"]);
+    document.getElementById("total").innerHTML = total.toFixed(2)+" €";
 
-    const precio = toNumberPrice(precioRaw);
-
-    const tallas = pick(x, ["tallas","talla","sizes","size"]);
-
-    return { referencia, descripcion, precio, tallas };
-  }).filter(x=>x.referencia);
-
-  ALL = normItems.filter(isRepeatable);
-  ALL.sort((a,b)=> String(a.referencia).localeCompare(String(b.referencia), "es"));
-
-  VIEW = [...ALL];
-  render();
-  $("countPill").textContent = `${VIEW.length} artículos`;
-
-  // Debug rápido en consola (por si quieres comprobar 3 refs)
-  console.log("Ejemplo precios:", ALL.slice(0,5).map(i=>({ref:i.referencia, precio:i.precio})));
+    if(total>=250){
+        document.getElementById("envio").innerHTML = "<span class='green'>No se cargarán gastos de envío</span>";
+    }else{
+        document.getElementById("envio").innerHTML = "<span class='red'>Se cargarán gastos de envío</span>";
+    }
 }
+
+function vaciar(){
+    pedido={};
+    render();
+    calcularTotal();
+}
+
+function guardarPDF(){
+    const {jsPDF} = window.jspdf;
+    const doc = new jsPDF();
+
+    doc.text("Repetición Ceremonia 26 - Abuela Tata",10,10);
+
+    let y=20;
+    for(let r in pedido){
+        let q=pedido[r].qty;
+        let p=pedido[r].precio;
+        let sub=q*p;
+        if(q===1||q===2) sub*=1.10;
+
+        doc.text(`${r} - Cantidad: ${q} - Importe: ${sub.toFixed(2)} €`,10,y);
+        y+=10;
+    }
+
+    doc.save("pedido_repeticion.pdf");
+}
+
+function enviarEmail(){
+    let body="Pedido Repetición Ceremonia 26\n\n";
+    for(let r in pedido){
+        let q=pedido[r].qty;
+        body+=`${r} - Cantidad: ${q}\n`;
+    }
+
+    window.location.href=`mailto:${EMAIL_TO}?cc=${document.getElementById("email").value}&subject=Pedido Repetición&body=${encodeURIComponent(body)}`;
+}
+
+cargarDatos();
+
+</script>
+</body>
+</html>
