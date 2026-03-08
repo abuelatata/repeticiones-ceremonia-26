@@ -294,8 +294,7 @@
       payload.bodyText,
       '',
       'Adjunto previsto: ' + fileName
-    ].filter(Boolean).join("
-");
+    ].filter(Boolean).join("\n");
       
       const pedidoCliente = [
       `Gracias por tu pedido a Abuela Tata.`,
@@ -306,8 +305,7 @@
       '',
       'RESUMEN DEL PEDIDO:',
       payload.bodyText
-    ].join("
-");
+    ].join("\n");
       
       window.emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
       await window.emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
