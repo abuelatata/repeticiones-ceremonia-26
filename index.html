@@ -32,13 +32,13 @@
       background-size: 18px 18px;
       color:var(--ink);
     }
-    .wrap{max-width:1280px;margin:auto;padding:10px 10px 90px}
+    .wrap{max-width:1280px;margin:auto;padding:8px 8px 90px}
     header{
       position:sticky;
-      top:8px;
+      top:6px;
       z-index:60;
-      padding:8px 10px;
-      background:rgba(255,255,255,.94);
+      padding:8px;
+      background:rgba(255,255,255,.96);
       backdrop-filter: blur(10px);
       border:1px solid var(--line);
       border-radius:16px;
@@ -47,12 +47,16 @@
     }
     .toprow{
       display:grid;
-      grid-template-columns:auto 1fr auto;
+      grid-template-columns:auto auto;
+      grid-template-areas:
+        "back count"
+        "title title";
       align-items:center;
       gap:8px;
       margin:0;
     }
     .backbtn{
+      grid-area:back;
       border:1px solid var(--line);
       background:#fff;
       color:var(--ink);
@@ -66,11 +70,11 @@
       box-shadow: 0 8px 16px rgba(0,0,0,.05);
       white-space:nowrap;
     }
-    .topmeta{display:flex;align-items:center;justify-content:center;gap:8px;min-width:0}
+    .topmeta{grid-area:title;display:flex;align-items:center;justify-content:flex-start;gap:8px;min-width:0}
     .spacer{display:none}
-    header h1{margin:0;font-size:19px;letter-spacing:.2px;line-height:1.1;text-align:center}
+    header h1{margin:0;font-size:18px;letter-spacing:.2px;line-height:1.05;text-align:left}
     header .sub{display:none}
-    .controls .sub{display:block;margin:0;font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;color:var(--muted);font-size:12px;line-height:1.25;padding:10px 12px;border-radius:14px;background:#fff;border:1px solid var(--line);}
+    .controls .sub{display:block;margin:0;font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;color:var(--muted);font-size:12px;line-height:1.25;padding:8px 10px;border-radius:14px;background:#fff;border:1px solid var(--line);}
     .controls{
       margin-top:8px;
       padding:10px;
@@ -96,7 +100,7 @@
     .filters{
       margin-top:8px;
       display:grid;
-      grid-template-columns:1fr auto;
+      grid-template-columns:1fr;
       gap:8px;
       align-items:center;
     }
@@ -114,6 +118,8 @@
     }
     .search input::placeholder{color:#7d8f8b}
     .pill{
+      grid-area:count;
+      justify-self:end;
       display:inline-flex;
       gap:6px;
       align-items:center;
@@ -324,18 +330,40 @@
     @media (max-width: 700px){
       .wrap{padding:8px 8px 90px}
       header{padding:6px 8px 5px}
-      .toprow{flex-wrap:wrap;justify-content:center;gap:6px;margin-bottom:4px}
+      .toprow{grid-template-columns:1fr auto;grid-template-areas:"back count" "title title";gap:6px}
       .spacer{display:none}
       header h1{font-size:19px}
       header .sub{margin-top:4px;font-size:12px;line-height:1.25}
-      .backbtn{width:100%;text-align:center;padding:6px 10px;font-size:12px}
-      .modebar{margin-top:6px;gap:6px}
+      .backbtn{
+      grid-area:back;width:100%;text-align:center;padding:6px 10px;font-size:12px}
+      .modebar{margin-top:2px;gap:6px}
       .modebtn{padding:7px 10px;font-size:12px}
       .filters{margin-top:6px;gap:6px}
       .search{min-width:100%}
       .search input{padding:8px 10px;font-size:14px}
       .pill{padding:6px 9px;font-size:11px}
     }
+  
+    @media (max-width: 700px){
+      .wrap{padding:6px 6px 84px}
+      header{padding:7px; top:4px}
+      .controls{padding:8px; margin-top:6px}
+      .modebtn{padding:7px 11px; font-size:12px}
+      .search input{padding:8px 10px; font-size:14px}
+      .hd{padding:12px 12px 8px}
+      .bd{padding:12px}
+      .form{grid-template-columns:1fr 1fr; gap:8px}
+      .form .full{grid-column:1/-1}
+    }
+    @media (max-width: 430px){
+      .toprow{grid-template-columns:1fr auto}
+      .backbtn{font-size:11px; padding:6px 8px}
+      header h1{font-size:15px}
+      .pill{font-size:11px; padding:7px 9px}
+      .controls .sub{font-size:11px; padding:7px 9px}
+      .modebtn{font-size:12px}
+    }
+
   </style>
 </head>
 <body>
